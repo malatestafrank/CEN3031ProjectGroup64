@@ -1,0 +1,16 @@
+need to install Postman to monitor requests
+
+run these commands in terminal to properly run codebase:
+    npm install express //may need to run this code in powershell 'Set-ExecutionPolicy Unrestricted' to allow for npm to install express
+
+to run program:
+    npm run dev
+    open Postman to monitor requests
+
+API Endpoints
+
+GET /objectName - gets all objects
+POST /objectName - creates a new object
+GET /objectName/:id - gets a single object
+DELETE /objectName/:id - deletes a single object
+PATCH /objectName/:id - updates a single object
