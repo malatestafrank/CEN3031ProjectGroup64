@@ -3,40 +3,29 @@
 */
 
 const express = require('express')
-//const Project = require('..models/projectModel')
+const {
+    createProject,
+    getProjects,
+    getProject,
+    deleteProject,
+    updateProject
+} = require('../controllers/projectController')
 
 const router = express.Router()
 
 //GET all objects
-router.get('/', (req, res) => {
-    res.json({mssg: 'GET all objects'})
-})
+router.get('/', getProjects)
 
 //GET a single object
-router.get('/:id', (req, res) => {
-    res.json({mssg: 'GET a single object'})
-})
+router.get('/:id', getProject)
 
-//POST a new object
-router.post('/', async (req, res) => {
-    const {title, description, employees, managers, admins} = req.body
-
-    try {
-        const workout = await Workout.create({title, description, employees, managers, admins})
-        res.status(200).json(workout)
-    } catch (error) {
-        res.status(400).json({error: error.message})
-    }
-})
+//POST a new project
+router.post('/', createProject)
 
 //DELETE an object
-router.delete('/:id', (req, res) => {
-    res.json({mssg: 'DELETE an object'})
-})
+router.delete('/:id', deleteProject)
 
 //UPDATE an object
-router.patch('/:id', (req, res) => {
-    res.json({mssg: 'UPDATE an object'})
-})
+router.patch('/:id', updateProject)
 
 module.exports = router

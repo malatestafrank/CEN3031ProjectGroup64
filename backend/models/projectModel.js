@@ -17,29 +17,32 @@ const projectSchema = new Schema({
     employees: {
         type: [{
             employeeId: {
-                type: [mongoose.Schema.Types.ObjectId]
+                //type: [mongoose.Schema.Types.ObjectId]
+                type: Number
             },
-            timeEntries: {
+            /*timeEntries: {
                 type: [timeEntrySchema],
                 default: []
-            }
+            }*/
         }],
         required: false
     },
     managers: {
         type: [{
             managerId: {
-                type: [mongoose.Schema.Types.ObjectId]
+                //type: [mongoose.Schema.Types.ObjectId]
+                type: Number
             },
-            timeEntries: {
+            /*timeEntries: {
                 type: [timeEntrySchema],
                 default: []
-            }
+            }*/
         }],
         required: false
     },
     admins: {
-        type: [mongoose.Schema.Types.ObjectId],
+        //type: [mongoose.Schema.Types.ObjectId],
+        type: Number,
         required: true
     }
 })
