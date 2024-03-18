@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 
 //components
 import ProjectDetails from '../components/ProjectDetails'
+import ProjectForm from "../components/ProjectForm"
 
 const Home = () => {
     const [projects, setProjects] = useState(null)
@@ -26,6 +27,7 @@ const Home = () => {
                     <ProjectDetails key={project._id} project={project}></ProjectDetails>
                 ))}
             </div>
+            <ProjectForm></ProjectForm>
         </div>
     )
 }
