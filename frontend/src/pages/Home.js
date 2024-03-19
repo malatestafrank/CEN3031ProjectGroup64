@@ -4,6 +4,7 @@ import { useProjectsContext } from "../hooks/useProjectsContext"
 //components
 import ProjectDetails from '../components/ProjectDetails'
 import ProjectForm from "../components/ProjectForm"
+import TimeLogForm from "../components/TimeLogForm"
 
 const Home = () => {
     const {projects, dispatch} = useProjectsContext()
@@ -29,6 +30,7 @@ const Home = () => {
                 ))}
             </div>
             <ProjectForm></ProjectForm>
+            <TimeLogForm></TimeLogForm>
         </div>
     )
 }
