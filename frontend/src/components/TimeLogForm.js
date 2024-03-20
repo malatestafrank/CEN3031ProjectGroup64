@@ -1,13 +1,19 @@
-import React from 'react'
+import { useState } from "react"
 
 const TimeLogForm = () => {
   return (
+
    <form>
-    <div>
-        <label>Time Spent Working</label>
-        <input type='text'/>
-    </div>
-    <input type='submit' value='Submit Time' />
+
+    <h3>Time Logging Form</h3>
+
+    <label>Clock In Time: </label>
+    <input type='number'/>
+
+    <label>Clock Out Time: </label>
+    <input type='number'/>
+
+    <button type ='submit'>Submit Time</button>
    </form>
   )
 }

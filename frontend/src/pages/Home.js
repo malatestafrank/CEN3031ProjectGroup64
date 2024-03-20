@@ -32,6 +32,7 @@ const Home = () => {
             <ProjectForm></ProjectForm>
             <TimeLogForm></TimeLogForm>
         </div>
+        
     )
 }
 
