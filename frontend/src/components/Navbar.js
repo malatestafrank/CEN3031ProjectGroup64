@@ -11,7 +11,7 @@ const Navbar = () => {
     return (
         <header>
             <div className="container">
-                <Link to="/">
+                <Link to="/dashboard">
                     <h1>ShiftFlow Master</h1>
                 </Link>
                 <nav>
@@ -19,7 +19,7 @@ const Navbar = () => {
                         <button onClick={handleClick}>Log out</button>
                     </div>
                     <div>
-                        <Link to="/login">Login</Link>
+                        <Link to="/">Login</Link>
                         <Link to="/signup">Signup</Link>
                     </div>
                 </nav>
