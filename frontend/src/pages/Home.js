@@ -9,7 +9,7 @@ import TimeLogForm from "../components/TimeLogForm"
 
 const Home = () => {
     const {projects, dispatch} = useProjectsContext()
-    const {isAdmin} = useAuthContext()
+    const {user} = useAuthContext()
 
     useEffect(() => {
         const fetchProjects = async () => {
@@ -31,7 +31,7 @@ const Home = () => {
                     <ProjectDetails key={project._id} project={project}></ProjectDetails>
                 ))}
             </div>
-            {isAdmin() && <ProjectForm></ProjectForm> }
+            {user?.privilege === 'admin' && <ProjectForm></ProjectForm> }
             <TimeLogForm></TimeLogForm>
         </div>
         
