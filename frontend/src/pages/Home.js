@@ -6,6 +6,7 @@ import { useAuthContext } from "../hooks/useAuthContext"
 import ProjectDetails from '../components/ProjectDetails'
 import ProjectForm from "../components/ProjectForm"
 import TimeLogForm from "../components/TimeLogForm"
+import ReportForm from "../components/ReportForm"
 
 const Home = () => {
     const {projects, dispatch} = useProjectsContext()
@@ -38,6 +39,7 @@ const Home = () => {
             </div>
             {user?.privilege === 'admin' && <ProjectForm></ProjectForm> }
             <TimeLogForm></TimeLogForm>
+            <ReportForm></ReportForm>
         </div>
         
     )
