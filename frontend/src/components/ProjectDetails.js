@@ -27,7 +27,7 @@ const ProjectDetails = ({ project }) => {
         <div className="project-details">
             <h4>{project.title}</h4>
             <p><strong>Description: </strong>{project.description}</p>
-            <p><strong>Admin: </strong>{project.admins}</p>
+            
             <span className="material-symbols-outlined" onClick={handleClick}>delete</span>
         </div>
     )

@@ -2,6 +2,14 @@ const mongoose = require('mongoose')
 
 const Schema = mongoose.Schema
 
+/*
+    Project contains:
+        title
+        description
+        array of employee emails
+        array of manager emails
+*/
+
 const projectSchema = new Schema({
     title: {
         type: String,
@@ -15,55 +23,14 @@ const projectSchema = new Schema({
         required: true
     },
     employees: {
-        type: [{
-            employeeId: {
-                //type: [mongoose.Schema.Types.ObjectId]
-                type: Number
-            },
-            /*timeEntries: {
-                type: [timeEntrySchema],
-                default: []
-            }*/
-        }],
+        type: [String],
         required: false
     },
     managers: {
-        type: [{
-            managerId: {
-                //type: [mongoose.Schema.Types.ObjectId]
-                type: Number
-            },
-            /*timeEntries: {
-                type: [timeEntrySchema],
-                default: []
-            }*/
-        }],
+        type: [String],
         required: false
-    },
-    admins: {
-        //type: [mongoose.Schema.Types.ObjectId],
-        type: Number,
-        required: true
     }
 })
 
-//may need to make this its own model file
-const timeEntrySchema = new mongoose.Schema({
-    startTime: {
-        type: Date,
-        required: true
-    },
-    endTime: {
-        type: Date,
-        required: false 
-    },
-    //if we want to have a description for each time log (essentially a report)
-    description: {
-        type: String,
-        minlength: 3,
-        maxlength: 500,
-        required: false
-    }
-})
 
 module.exports = mongoose.model('Project', projectSchema)
