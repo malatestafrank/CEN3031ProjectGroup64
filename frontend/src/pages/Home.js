@@ -13,16 +13,21 @@ const Home = () => {
 
     useEffect(() => {
         const fetchProjects = async () => {
-            const response = await fetch('/api/projects')
+            const response = await fetch('/api/projects', {
+                headers: {
+                    'Authorization': `Bearer ${user.token}`
+                }
+            })
             const json = await response.json()
 
             if(response.ok) {
                 dispatch({type: 'SET_PROJECTS', payload: json})
             }
         }
-
-        fetchProjects()
-    }, []) //[] means the effect will only fire when the page is first loaded
+        if(user) {
+            fetchProjects()
+        }
+    }, [dispatch, user]) //[] means the effect will only fire when the page is first loaded
 
     return (
         <div className="home">

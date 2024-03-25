@@ -1,11 +1,20 @@
 import { useProjectsContext } from "../hooks/useProjectsContext"
+import { useAuthContext } from "../hooks/useAuthContext"
 
 const ProjectDetails = ({ project }) => {
     const { dispatch } = useProjectsContext()
+    const { user } = useAuthContext()
 
     const handleClick = async () => {
+        if(!user) {
+            return
+        }
+
         const response = await fetch('/api/projects/' + project._id, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${user.token}`
+            }
         })
         const json = await response.json()
 
