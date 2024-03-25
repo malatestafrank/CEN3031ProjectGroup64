@@ -13,14 +13,9 @@ const Navbar = () => {
     return (
         <header>
             <div className="container">
-                {user && (
-                    <Link to="/dashboard">
-                        <h1>ShiftFlow Master</h1>
-                    </Link>
-                )}
-                {!user && (
+                <Link to="/dashboard">
                     <h1>ShiftFlow Master</h1>
-                )}
+                </Link>
                 <nav>
                     {user && (
                         <div>
