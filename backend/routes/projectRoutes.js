@@ -10,8 +10,12 @@ const {
     deleteProject,
     updateProject
 } = require('../controllers/projectController')
+const requireAUTH = require('../middleware/requireAuth')
 
+//require auth for all project routes
 const router = express.Router()
+
+router.use(requireAUTH)
 
 //GET all objects
 router.get('/', getProjects)
