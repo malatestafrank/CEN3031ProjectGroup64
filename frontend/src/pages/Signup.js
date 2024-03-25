@@ -4,17 +4,16 @@ import { useSignup } from '../hooks/useSignup'
 const Signup = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [privilege, setPrivilege] = useState('')
+    const [privilege, setPrivilege] = useState('admin')
     const {signup, error, isLoading} = useSignup()
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-
         await signup(email, password, privilege)
     }
 
     return (
-        <form classname="signup" onSubmit={handleSubmit}>
+        <form className="signup" onSubmit={handleSubmit}>
             <h3>Sign up</h3>
 
             <label>Email:</label>

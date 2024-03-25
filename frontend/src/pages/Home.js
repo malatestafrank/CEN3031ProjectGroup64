@@ -1,5 +1,6 @@
 import { useEffect } from "react"
 import { useProjectsContext } from "../hooks/useProjectsContext"
+import { useAuthContext } from "../hooks/useAuthContext"
 
 //components
 import ProjectDetails from '../components/ProjectDetails'
@@ -8,6 +9,7 @@ import TimeLogForm from "../components/TimeLogForm"
 
 const Home = () => {
     const {projects, dispatch} = useProjectsContext()
+    const {isAdmin} = useAuthContext()
 
     useEffect(() => {
         const fetchProjects = async () => {
@@ -29,7 +31,7 @@ const Home = () => {
                     <ProjectDetails key={project._id} project={project}></ProjectDetails>
                 ))}
             </div>
-            <ProjectForm></ProjectForm>
+            {isAdmin() && <ProjectForm></ProjectForm> }
             <TimeLogForm></TimeLogForm>
         </div>
         

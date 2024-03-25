@@ -20,8 +20,10 @@ export const AuthContextProvider = ({ children }) => {
 
     console.log('AuthContext state: ', state)
 
+    const isAdmin = () => state.user?.privilege === 'admin';
+
     return (
-        <AuthContext.Provider value={{...state, dispatch}}>
+        <AuthContext.Provider value={{...state, dispatch, isAdmin}}>
             { children }
         </AuthContext.Provider>
     )
