@@ -16,6 +16,7 @@ const userSchema = new Schema({
     },
     privilege: {
         type: String,
+        default: 'admin',
         required: true
     }
 })
