@@ -34,6 +34,7 @@ const ProjectForm = () => {
     }, [])
 
     const handleEmployeeChange = (e) => {
+        console.log(e.target.value)
         setSelectedEmployees([...e.target.value])
     }
 
