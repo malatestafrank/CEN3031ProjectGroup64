@@ -4,6 +4,10 @@ import { useAuthContext } from "../hooks/useAuthContext"
 
 const TimeLogForm = () => {
     const [selectedProject, setSelectedProject] = useState('')
+    const[startTime, setStartTime] = useState('')
+    const[endTime, setEndTime] = useState('')
+    const[startDate, setStartDate] = useState('')
+    const[endDate, setEndDate] = useState('')
     const {projects, dispatch} = useProjectsContext()
     const {user} = useAuthContext()
 
@@ -28,10 +32,25 @@ const TimeLogForm = () => {
     const handleProjectSelection = (e) => {
       setSelectedProject(e.target.value)
     }
+    const handleStartTimeSelection = (e) => {
+      setStartTime(e.target.value)
+    }
+    const handleEndTimeSelection = (e) => {
+      setEndTime(e.target.value)
+    }
+    const handleStartDateSelection = (e) => {
+      setStartDate(e.target.value)
+    }
+    const handleEndDateSelection = (e) => {
+      setEndDate(e.target.value)
+    }
+    const handleSubmit = async (e) => {
+      e.preventDefault()
+  }
 
     return (
       
-      <form>
+      <form onSubmit={handleSubmit}>
 
       <h3>Time Logging Form</h3>
       
@@ -46,16 +65,20 @@ const TimeLogForm = () => {
       </div>
   
       <label>Clock In Time: </label>
-      <input type='time'/>
+      <input type='text' onChange={handleStartTimeSelection}/>
+      <p>You typed {startTime}</p>
 
       <label>Clock In Date: </label>
-      <input type='date'/>
+      <input type='date' onChange={handleStartDateSelection}/>
+      <p>You typed {startDate}</p>
   
       <label>Clock Out Time: </label>
-      <input type='time'/>
+      <input type='text' onChange={handleEndTimeSelection}/>
+      <p>You typed {endTime}</p>
 
       <label>Clock Out Date: </label>
-      <input type='date'/>
+      <input type='date' onChange={handleEndDateSelection}/>
+      <p>You typed {endDate}</p>
   
       <button type ='submit'>Submit Time</button> 
      </form>
