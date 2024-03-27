@@ -46,10 +46,16 @@ const TimeLogForm = () => {
       </div>
   
       <label>Clock In Time: </label>
-      <input type='number'/>
+      <input type='time'/>
+
+      <label>Clock In Date: </label>
+      <input type='date'/>
   
       <label>Clock Out Time: </label>
-      <input type='number'/>
+      <input type='time'/>
+
+      <label>Clock Out Date: </label>
+      <input type='date'/>
   
       <button type ='submit'>Submit Time</button> 
      </form>
