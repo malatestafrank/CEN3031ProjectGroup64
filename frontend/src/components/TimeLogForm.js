@@ -93,19 +93,19 @@ const TimeLogForm = () => {
       <p>You typed {projectTitle}</p>
   
       <label>Clock In Time: </label>
-      <input type='text' onChange={handleStartTimeSelection}/>
+      <input type='text' value={timeIn}onChange={handleStartTimeSelection}/>
       <p>You typed {timeIn}</p>
 
       <label>Clock In Date: </label>
-      <input type='date' onChange={handleStartDateSelection}/>
+      <input type='date' value={dateIn} onChange={handleStartDateSelection}/>
       <p>You typed {dateIn}</p>
   
       <label>Clock Out Time: </label>
-      <input type='text' onChange={handleEndTimeSelection}/>
+      <input type='text' value ={timeOut} onChange={handleEndTimeSelection}/>
       <p>You typed {timeOut}</p>
 
       <label>Clock Out Date: </label>
-      <input type='date' onChange={handleEndDateSelection}/>
+      <input type='date' value={dateOut} onChange={handleEndDateSelection}/>
       <p>You typed {dateOut}</p>
   
       <button type ='submit'>Submit Time</button> 
