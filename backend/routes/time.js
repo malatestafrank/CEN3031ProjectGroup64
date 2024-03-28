@@ -4,7 +4,7 @@ const express = require('express')
 const {getTimeLogs, createTimeLog} = require('../controllers/timeController')
 
 const router = express.Router()
-router.use()
+
 
 router.get('/', getTimeLogs)
 
