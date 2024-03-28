@@ -15,14 +15,14 @@ const timelogSchema = new Schema({
         type: String,
         required: true
     },
-    dateIn:{
-        type: Date,
+    dateIn: {
+        type: String,
         required: true
     },
     dateOut:{
-        type: Date,
+        type: String,
         required: true
-    },
+    }
 })
 
 

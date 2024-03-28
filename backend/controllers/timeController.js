@@ -1,5 +1,4 @@
 const TimeLog = require('../models/timelogModel')
-const mongoose = require('mongoose')
 
 //get all Time Logs
 const getTimeLogs = async (req, res) => {
