@@ -34,8 +34,26 @@ const ProjectForm = () => {
     }, [])
 
     const handleEmployeeChange = (e) => {
-        console.log(e.target.value)
-        setSelectedEmployees([...e.target.value])
+        const selectedOptions = [...e.target.selectedOptions]
+        const newSelectedEmployees = selectedOptions.map((option) => option.value)
+        setSelectedEmployees([...selectedEmployees, ...newSelectedEmployees])
+
+        const updatedAvailableEmployees = availableEmployees.filter(
+            (email) => !newSelectedEmployees.includes(email)
+        )
+        setAvailableEmployees(updatedAvailableEmployees)
+
+      };
+
+    const handleRemoveAttributedEmployee = (email) => {
+        //find the email within the selectedEmployees array
+        const updatedSelectedEmployees = selectedEmployees.filter(
+            (emp) => emp !== email
+          )
+        //then update the selectedEmployee array with the removed email
+        setSelectedEmployees(updatedSelectedEmployees)
+        //and add it back to availableEmployee array
+        setAvailableEmployees([...availableEmployees, email])
     }
 
     const handleSubmit = async (e) => {
@@ -46,7 +64,7 @@ const ProjectForm = () => {
             return
         }
 
-        const project = {title, description}
+        const project = {title, description, selectedEmployees}
 
         const response = await fetch('/api/projects', {
             method: 'POST',
@@ -64,6 +82,7 @@ const ProjectForm = () => {
         if(response.ok) {
             setTitle('')
             setDescription('')
+            setSelectedEmployees(null)
             setError(null)
             console.log('new project added', json)
             dispatch({type: 'CREATE_PROJECT', payload: json})
@@ -88,7 +107,7 @@ const ProjectForm = () => {
             value={description}
             />
 
-            <label>Attribute Employees:</label>
+            <label>Add Employees:</label>
             <select multiple className="employee-list" value={selectedEmployees} onChange={handleEmployeeChange}>
                 {availableEmployees.map((email) => (
                     <option
@@ -99,6 +118,18 @@ const ProjectForm = () => {
                     </option>
                 ))}
             </select>
+
+            <label>Attributed Employees:</label>
+            <ul className="attributed-employees">
+                {selectedEmployees.map((email) => (
+                    <li key={email}>
+                        {email}
+                        <button onClick={() => handleRemoveAttributedEmployee(email)}>
+                            Remove
+                        </button>
+                    </li>
+                ))}
+            </ul>
            
            <button>Add Project</button>
            {error && <div className="error">{error}</div>}
