@@ -34,6 +34,7 @@ const ProjectForm = () => {
     }, [])
 
     const handleEmployeeChange = (e) => {
+        if(availableEmployees) {
         const selectedOptions = [...e.target.selectedOptions]
         const newSelectedEmployees = selectedOptions.map((option) => option.value)
         setSelectedEmployees([...selectedEmployees, ...newSelectedEmployees])
@@ -42,6 +43,9 @@ const ProjectForm = () => {
             (email) => !newSelectedEmployees.includes(email)
         )
         setAvailableEmployees(updatedAvailableEmployees)
+        }else {
+            setError('availableEmployees is null')
+        }
 
       };
 
@@ -82,7 +86,7 @@ const ProjectForm = () => {
         if(response.ok) {
             setTitle('')
             setDescription('')
-            setSelectedEmployees(null)
+            setSelectedEmployees([])
             setError(null)
             console.log('new project added', json)
             dispatch({type: 'CREATE_PROJECT', payload: json})
@@ -110,10 +114,7 @@ const ProjectForm = () => {
             <label>Add Employees:</label>
             <select multiple className="employee-list" value={selectedEmployees} onChange={handleEmployeeChange}>
                 {availableEmployees.map((email) => (
-                    <option
-                        key={email}
-                        value={email}
-                        className={selectedEmployees.includes(email) ? "selected-option" : ""}>
+                    <option key={email} value={email}>
                         {email}    
                     </option>
                 ))}

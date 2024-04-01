@@ -100,8 +100,15 @@ div.error {
 input.error {
   border: 1px solid var(--error);
 }
-.selected-option {
-  background-color: #e0e0e0; /* Adjust color as needed */
+.attributed-employees {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.employee-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 /* navbar */

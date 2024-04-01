@@ -34,10 +34,12 @@ const Home = () => {
         <div className="home">
             <div className="projects">
                 {projects && projects.map((project) => (
-                    <ProjectDetails key={project._id} project={project}></ProjectDetails>
+                    <ProjectDetails key={project._id} project={project}>
+                        {(user?.privilege === "admin" || project.employees.includes(user?.email))}
+                    </ProjectDetails>
                 ))}
             </div>
-            {user?.privilege === 'admin' && <ProjectForm></ProjectForm> }
+            {(user?.privilege === 'admin') && <ProjectForm></ProjectForm> }
             <TimeLogForm></TimeLogForm>
             <ReportForm></ReportForm>
         </div>
