@@ -42,11 +42,13 @@ const getProject = async (req, res) => {
 
 //create new project
 const createProject = async (req, res) => {
-    const {title, description, employeeEmails, managerEmails} = req.body
+    const {title, description, employees, managers} = req.body
+
+    console.log("Received employee emails:", employees);
 
     //add doc to db
     try {
-        const project = await Project.create({title, description, employeeEmails, managerEmails})
+        const project = await Project.create({title, description, employees, managers})
         res.status(200).json(project)
     } catch (error) {
         res.status(400).json({error: error.message})

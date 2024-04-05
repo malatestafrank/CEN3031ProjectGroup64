@@ -11,7 +11,7 @@ const ProjectForm = () => {
     const [error, setError] = useState(null)
     //might add ability to add employees/managers from project form later on
     const [availableEmployees, setAvailableEmployees] = useState([])
-    const [selectedEmployees, setSelectedEmployees] = useState([]);
+    const [employees, setEmployees] = useState([]);
 
     const [availableManagers, setAvailableManagers] = useState([])
     const [selectedManagers, setSelectedManagers] = useState([])
@@ -36,11 +36,11 @@ const ProjectForm = () => {
     const handleEmployeeChange = (e) => {
         if(availableEmployees) {
         const selectedOptions = [...e.target.selectedOptions]
-        const newSelectedEmployees = selectedOptions.map((option) => option.value)
-        setSelectedEmployees([...selectedEmployees, ...newSelectedEmployees])
+        const newEmployees = selectedOptions.map((option) => option.value)
+        setEmployees([...employees, ...newEmployees])
 
         const updatedAvailableEmployees = availableEmployees.filter(
-            (email) => !newSelectedEmployees.includes(email)
+            (email) => !newEmployees.includes(email)
         )
         setAvailableEmployees(updatedAvailableEmployees)
         }else {
@@ -50,12 +50,12 @@ const ProjectForm = () => {
       };
 
     const handleRemoveAttributedEmployee = (email) => {
-        //find the email within the selectedEmployees array
-        const updatedSelectedEmployees = selectedEmployees.filter(
+        //find the email within the employees array
+        const updatedEmployees = employees.filter(
             (emp) => emp !== email
           )
         //then update the selectedEmployee array with the removed email
-        setSelectedEmployees(updatedSelectedEmployees)
+        setEmployees(updatedEmployees)
         //and add it back to availableEmployee array
         setAvailableEmployees([...availableEmployees, email])
     }
@@ -68,7 +68,18 @@ const ProjectForm = () => {
             return
         }
 
-        const project = {title, description, selectedEmployees}
+        const project = {title, description, employees}
+
+        
+        console.log('--- Selected Employees:')
+        if(employees) {
+            employees.forEach((email) => {
+                console.log(email)
+            })
+        }else {
+            console.log('No selected employees.')
+        }
+        
 
         const response = await fetch('/api/projects', {
             method: 'POST',
@@ -86,7 +97,7 @@ const ProjectForm = () => {
         if(response.ok) {
             setTitle('')
             setDescription('')
-            setSelectedEmployees([])
+            setEmployees([])
             setError(null)
             console.log('new project added', json)
             dispatch({type: 'CREATE_PROJECT', payload: json})
@@ -112,7 +123,7 @@ const ProjectForm = () => {
             />
 
             <label>Add Employees:</label>
-            <select multiple className="employee-list" value={selectedEmployees} onChange={handleEmployeeChange}>
+            <select multiple className="employee-list" value={employees} onChange={handleEmployeeChange}>
                 {availableEmployees.map((email) => (
                     <option key={email} value={email}>
                         {email}    
@@ -122,7 +133,7 @@ const ProjectForm = () => {
 
             <label>Attributed Employees:</label>
             <ul className="attributed-employees">
-                {selectedEmployees.map((email) => (
+                {employees.map((email) => (
                     <li key={email}>
                         {email}
                         <button onClick={() => handleRemoveAttributedEmployee(email)}>
