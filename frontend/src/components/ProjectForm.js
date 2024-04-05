@@ -14,24 +14,25 @@ const ProjectForm = () => {
     const [employees, setEmployees] = useState([]);
 
     const [availableManagers, setAvailableManagers] = useState([])
-    const [selectedManagers, setSelectedManagers] = useState([])
+    const [managers, setManagers] = useState([])
 
     //fetch employee and manager emails
     useEffect(() => {
-        const fetchUserEmails = async () => {
-            const res = await fetch('/api/user')
-            const json = await res.json()
-
-            if(res.ok) {
-                const employeeEmails = json.filter((user) => user.privilege === 'employee').map((employee) => employee.email)
-                const managerEmails = json.filter((user) => user.privilege === 'manager').map((manager) => manager.email)
-
-                setAvailableEmployees(employeeEmails)
-                setAvailableManagers(managerEmails)
-            }
-        }
         fetchUserEmails()
     }, [])
+
+    const fetchUserEmails = async () => {
+        const res = await fetch('/api/user')
+        const json = await res.json()
+
+        if(res.ok) {
+            const employeeEmails = json.filter((user) => user.privilege === 'employee').map((employee) => employee.email)
+            const managerEmails = json.filter((user) => user.privilege === 'manager').map((manager) => manager.email)
+
+            setAvailableEmployees(employeeEmails)
+            setAvailableManagers(managerEmails)
+        }
+    }
 
     const handleEmployeeChange = (e) => {
         if(availableEmployees) {
@@ -47,7 +48,23 @@ const ProjectForm = () => {
             setError('availableEmployees is null')
         }
 
-      };
+      }
+
+      const handleManagerChange = (e) => {
+        if(availableManagers) {
+        const selectedOptions = [...e.target.selectedOptions]
+        const newManagers = selectedOptions.map((option) => option.value)
+        setManagers([...managers, ...newManagers])
+
+        const updatedAvailableManagers = availableManagers.filter(
+            (email) => !newManagers.includes(email)
+        )
+        setAvailableManagers(updatedAvailableManagers)
+        }else {
+            setError('availableManagers is null')
+        }
+
+      }
 
     const handleRemoveAttributedEmployee = (email) => {
         //find the email within the employees array
@@ -58,6 +75,17 @@ const ProjectForm = () => {
         setEmployees(updatedEmployees)
         //and add it back to availableEmployee array
         setAvailableEmployees([...availableEmployees, email])
+    }
+
+    const handleRemoveAttributedManager = (email) => {
+        //find the email within the managers array
+        const updatedManagers = managers.filter(
+            (emp) => emp !== email
+          )
+        //then update the selectedManager array with the removed email
+        setManagers(updatedManagers)
+        //and add it back to availableManager array
+        setAvailableManagers([...availableManagers, email])
     }
 
     const handleSubmit = async (e) => {
@@ -98,7 +126,9 @@ const ProjectForm = () => {
             setTitle('')
             setDescription('')
             setEmployees([])
+            setManagers([])
             setError(null)
+            fetchUserEmails()
             console.log('new project added', json)
             dispatch({type: 'CREATE_PROJECT', payload: json})
         }
@@ -137,6 +167,27 @@ const ProjectForm = () => {
                     <li key={email}>
                         {email}
                         <button onClick={() => handleRemoveAttributedEmployee(email)}>
+                            Remove
+                        </button>
+                    </li>
+                ))}
+            </ul>
+
+            <label>Add Managers:</label>
+            <select multiple className="manager-list" value={managers} onChange={handleManagerChange}>
+                {availableManagers.map((email) => (
+                    <option key={email} value={email}>
+                        {email}    
+                    </option>
+                ))}
+            </select>
+
+            <label>Attributed Managers:</label>
+            <ul className="attributed-managers">
+                {managers.map((email) => (
+                    <li key={email}>
+                        {email}
+                        <button onClick={() => handleRemoveAttributedManager(email)}>
                             Remove
                         </button>
                     </li>
