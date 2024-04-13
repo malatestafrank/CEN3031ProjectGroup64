@@ -112,7 +112,7 @@ const TimeLogForm = () => {
       <h3>Time Logging Form</h3>
       
       <div>
-        <label>Select Project to Log Time</label>
+        <label>Select Project to Log Time:</label>
         <select multiple className='project-list' value={projectTitle} onChange = {handleProjectSelection}>
           {projects && projects.map((project) => (
         <option key={project._id}>{project.title}</option>
