@@ -1,7 +1,7 @@
 const express = require('express')
 
 //controller functions
-const {getTimeLogs, createTimeLog} = require('../controllers/timeController')
+const {getTimeLogs, createTimeLog, deleteTimeLog} = require('../controllers/timeController')
 
 const router = express.Router()
 
