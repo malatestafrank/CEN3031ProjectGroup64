@@ -76,6 +76,8 @@ const TimeLogForm = () => {
     }
     const handleSubmit = async (e) => {
       e.preventDefault()
+      console.log(selectedEmployee)
+      console.log(selectedManager)
       const timelog={projectTitle, selectedEmployee, selectedManager, timeIn, timeOut, dateIn, dateOut}
       const response = await fetch('/api/time', {
         method: 'POST',
