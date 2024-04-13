@@ -122,8 +122,8 @@ const TimeLogForm = () => {
       <p>You typed {projectTitle}</p>
 
       <label>Add Employees:</label>
-            <select id="employees" value={selectedEmployee} onChange = {handleEmployeeSelection}>
-            {employees.map((email) => (
+            <select multiple className="employee-list" value={selectedEmployee} onChange={handleEmployeeSelection}>
+                {employees.map((email) => (
                     <option key={email} value={email}>
                         {email}    
                     </option>
@@ -131,15 +131,17 @@ const TimeLogForm = () => {
             </select>
       <p>You typed {selectedEmployee}</p>
 
+
       <label>Add Managers:</label>
-            <select id="managers" value={selectedManager} onChange = {handleManagerSelection}>
-            {managers.map((email) => (
+            <select multiple className="manager-list" value={selectedManager} onChange={handleManagerSelection}>
+                {managers.map((email) => (
                     <option key={email} value={email}>
                         {email}    
                     </option>
                 ))}
             </select>
-      <p>You typed {selectedManager}</p>
+            <p>You typed {selectedManager}</p>
+          
   
       <label>Clock In Time: </label>
       <input type='text' value={timeIn}onChange={handleStartTimeSelection}/>
