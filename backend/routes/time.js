@@ -10,4 +10,6 @@ router.get('/', getTimeLogs)
 
 router.post('/', createTimeLog)
 
+router.delete('/:id', deleteTimeLog)
+
 module.exports = router

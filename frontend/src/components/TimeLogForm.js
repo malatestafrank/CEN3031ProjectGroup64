@@ -8,11 +8,16 @@ const TimeLogForm = () => {
     const[timeOut, setTimeOut] = useState('')
     const[dateIn, setDateIn] = useState('')
     const[dateOut, setDateOut] = useState('')
+    const [employees, setEmployees] = useState([])
+    const[selectedEmployee, setSelectedEmployee] = useState('')
+    const [managers, setManagers] = useState([])
+    const[selectedManager, setSelectedManager] = useState('')
     const [error, setError] = useState(null)
     const {projects, dispatch} = useProjectsContext()
     const {user} = useAuthContext()
 
     useEffect(() => {
+        fetchUserEmails()
         const fetchProjects = async () => {
             const response = await fetch('/api/projects', {
                 headers: {
@@ -29,6 +34,30 @@ const TimeLogForm = () => {
             fetchProjects()
         }
     }, [dispatch, user]) //[] means the effect will only fire when the page is first loaded
+
+    const fetchUserEmails = async () => {
+      const res = await fetch('/api/user')
+      const json = await res.json()
+
+      if(res.ok) {
+          const employeeEmails = json.filter((user) => user.privilege === 'employee').map((employee) => employee.email)
+          const managerEmails = json.filter((user) => user.privilege === 'manager').map((manager) => manager.email)
+
+          setEmployees(employeeEmails)
+          setManagers(managerEmails)
+          console.log("success!")
+      }
+      else{
+        console.log('failed to get emails')
+      }
+  }
+
+    const handleEmployeeSelection = (e) => {
+      setSelectedEmployee(e.target.value)
+    }
+    const handleManagerSelection = (e) => {
+      setSelectedManager(e.target.value)
+    }
 
     const handleProjectSelection = (e) => {
       setProjectTitle(e.target.value)
@@ -47,10 +76,7 @@ const TimeLogForm = () => {
     }
     const handleSubmit = async (e) => {
       e.preventDefault()
-      console.log(projectTitle)
-      console.log(timeIn)
-      console.log(timeOut)
-      const timelog={projectTitle, timeIn, timeOut, dateIn, dateOut}
+      const timelog={projectTitle, selectedEmployee, selectedManager, timeIn, timeOut, dateIn, dateOut}
       const response = await fetch('/api/time', {
         method: 'POST',
         body: JSON.stringify(timelog),
@@ -65,6 +91,8 @@ const TimeLogForm = () => {
     }
     if(response.ok) {
         setProjectTitle('')
+        setSelectedEmployee('')
+        setSelectedManager('')
         setTimeIn('')
         setTimeOut('')
         setDateIn('')
@@ -84,13 +112,32 @@ const TimeLogForm = () => {
       <div>
         <label>Select Project to Log Time</label>
         <select id="project" value={projectTitle} onChange = {handleProjectSelection}>
-          <option>Select</option>
           {projects && projects.map((project) => (
         <option key={project._id}>{project.title}</option>
       ))}
         </select>
       </div>
       <p>You typed {projectTitle}</p>
+
+      <label>Add Employees:</label>
+            <select id="employees" value={selectedEmployee} onChange = {handleEmployeeSelection}>
+            {employees.map((email) => (
+                    <option key={email} value={email}>
+                        {email}    
+                    </option>
+                ))}
+            </select>
+      <p>You typed {selectedEmployee}</p>
+
+      <label>Add Managers:</label>
+            <select id="managers" value={selectedManager} onChange = {handleManagerSelection}>
+            {managers.map((email) => (
+                    <option key={email} value={email}>
+                        {email}    
+                    </option>
+                ))}
+            </select>
+      <p>You typed {selectedManager}</p>
   
       <label>Clock In Time: </label>
       <input type='text' value={timeIn}onChange={handleStartTimeSelection}/>

@@ -7,6 +7,16 @@ const timelogSchema = new Schema({
         type: String,
         required: true
     },
+    selectedEmployee: {
+        type: String,
+        required: true,
+        default : ""
+    },
+    selectedManager: {
+        type: String,
+        required: true,
+        default : ""
+    },
     timeIn: {
         type: String,
         required: true
