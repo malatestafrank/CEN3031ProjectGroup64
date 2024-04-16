@@ -7,6 +7,16 @@ const getTimeLogs = async (req, res) => {
     res.status(200).json(logs)
 }
 
+const getTimeLogID = async (req, res) => {
+    const {projectTitle, selectedEmployee, selectedManager, timeIn, timeOut, dateIn, dateOut} = req.query
+    const timelog = await TimeLog.findOne({projectTitle, selectedEmployee,
+    selectedManager, timeIn, timeOut, dateIn, dateOut})
+    if (!timelog){
+        return res.status(404).json({error: 'Time Log ID Not Found'})
+    }
+    res.status(200).json(timelog._id)
+}
+
 const getTimeLog = async (req, res) => {
     const{id} = req.params
 
@@ -48,10 +58,25 @@ const deleteTimeLog = async (req, res) => {
     res.status(200).json(timelog)
 }
 
+const updateTimeLog = async (req, res) => {
+    const {id} = req.params
+    if(!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({error: 'Time Log Not Found'})
+    }
+    const timelog = await TimeLog.findOneAndUpdate({_id:id}, {...req.body})
+    if (!timelog){
+        return res.status(400).json({error: "No such Time log"})
+
+    }
+    res.status(200).json(timelog)
+}
+
 
 module.exports = {
     getTimeLogs,
+    getTimeLogID,
     getTimeLog,
     createTimeLog,
-    deleteTimeLog
+    deleteTimeLog,
+    updateTimeLog
 }

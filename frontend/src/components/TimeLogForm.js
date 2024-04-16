@@ -12,6 +12,7 @@ const TimeLogForm = () => {
     const[selectedEmployee, setSelectedEmployee] = useState('')
     const [managers, setManagers] = useState([])
     const[selectedManager, setSelectedManager] = useState('')
+    const[clockInSubmitted, setClockInSubmitted] = useState(false)
     const [error, setError] = useState(null)
     const {projects, dispatch} = useProjectsContext()
     const {user} = useAuthContext()
@@ -74,11 +75,9 @@ const TimeLogForm = () => {
     const handleEndDateSelection = (e) => {
       setDateOut(e.target.value)
     }
-    const handleSubmit = async (e) => {
+    const handleCLockInSubmit = async (e) => {
       e.preventDefault()
-      console.log(selectedEmployee)
-      console.log(selectedManager)
-      const timelog={projectTitle, selectedEmployee, selectedManager, timeIn, timeOut, dateIn, dateOut}
+      const timelog={projectTitle, selectedEmployee, selectedManager, timeIn, dateIn}
       const response = await fetch('/api/time', {
         method: 'POST',
         body: JSON.stringify(timelog),
@@ -92,36 +91,67 @@ const TimeLogForm = () => {
         setError(json.error)
     }
     if(response.ok) {
+        setError(null)
+        setClockInSubmitted(true)
+        console.log('new timelog added', json)
+    }
+
+    }
+    const handleClockOutSubmit = async (e) => {
+        e.preventDefault()
+        console.log(projectTitle)
+        console.log(selectedEmployee)
+        console.log(selectedManager)
+        console.log(timeIn)
+        console.log(dateIn)
+        console.log(timeOut)
+        console.log(dateOut)
+        const response = await fetch(`
+        /api/time/id?projectTitle=${projectTitle}&selectedEmployee=${selectedEmployee}&selectedManager=${selectedManager}&timeIn=${timeIn}&timeOut=Not%20Clocked%20Out&dateIn=${dateIn}&dateOut=Not%20Clocked%20Out`, {
+        method: 'GET'
+        })
+        const timelogID = await response.json()
+        if(response.ok) {
+          console.log('new update added', timelogID)
+      }
+      const patchResponse = await fetch(`/api/time/${timelogID}`, {
+        method: 'PATCH',
+        body: JSON.stringify({timeOut, dateOut}),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+      const json = await patchResponse.json()
+      if (patchResponse.ok){
+        console.log('patch successful', json)
+      }
+        setError(null)
         setProjectTitle('')
         setSelectedEmployee('')
         setSelectedManager('')
         setTimeIn('')
-        setTimeOut('')
         setDateIn('')
+        setTimeOut('')
         setDateOut('')
         setError(null)
-        console.log('new timelog added', json)
-    }
-
+        setClockInSubmitted(false)
   }
 
     return (
       
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={!clockInSubmitted? handleCLockInSubmit : handleClockOutSubmit}>
 
       <h3>Time Logging Form</h3>
       
-      <div>
-        <label>Select Project to Log Time:</label>
+        {!clockInSubmitted? (<><label>Select Project to Log Time:</label>
         <select multiple className='project-list' value={projectTitle} onChange = {handleProjectSelection}>
           {projects && projects.map((project) => (
         <option key={project._id}>{project.title}</option>
       ))}
         </select>
-      </div>
-      <p>You typed {projectTitle}</p>
+      <p>You typed {projectTitle}</p></>) : null}
 
-      <label>Add Employees:</label>
+      {!clockInSubmitted? (<><label>Add Employees:</label>
             <select multiple className="employee-list" value={selectedEmployee} onChange={handleEmployeeSelection}>
                 {employees.map((email) => (
                     <option key={email} value={email}>
@@ -129,10 +159,9 @@ const TimeLogForm = () => {
                     </option>
                 ))}
             </select>
-      <p>You typed {selectedEmployee}</p>
+      <p>You typed {selectedEmployee}</p></>) : null}
 
-
-      <label>Add Managers:</label>
+      {!clockInSubmitted? (<>  <label>Add Managers:</label>
             <select multiple className="manager-list" value={selectedManager} onChange={handleManagerSelection}>
                 {managers.map((email) => (
                     <option key={email} value={email}>
@@ -140,26 +169,25 @@ const TimeLogForm = () => {
                     </option>
                 ))}
             </select>
-            <p>You typed {selectedManager}</p>
-          
-  
-      <label>Clock In Time: </label>
+            <p>You typed {selectedManager}</p></>) : null}
+
+      {!clockInSubmitted? (<><label>Clock In Time: </label>
       <input type='text' value={timeIn}onChange={handleStartTimeSelection}/>
-      <p>You typed {timeIn}</p>
+      <p>You typed {timeIn}</p></>) : null}
 
-      <label>Clock In Date: </label>
+      {!clockInSubmitted? (<><label>Clock In Date: </label>
       <input type='date' value={dateIn} onChange={handleStartDateSelection}/>
-      <p>You typed {dateIn}</p>
-  
-      <label>Clock Out Time: </label>
-      <input type='text' value ={timeOut} onChange={handleEndTimeSelection}/>
-      <p>You typed {timeOut}</p>
+      <p>You typed {dateIn}</p></>) : null}
 
-      <label>Clock Out Date: </label>
+      {clockInSubmitted? (<><label>Clock Out Time: </label>
+      <input type='text' value ={timeOut} onChange={handleEndTimeSelection}/>
+      <p>You typed {timeOut}</p></>) : null}
+
+      {clockInSubmitted? (<>  <label>Clock Out Date: </label>
       <input type='date' value={dateOut} onChange={handleEndDateSelection}/>
-      <p>You typed {dateOut}</p>
-  
-      <button type ='submit'>Submit Time</button> 
+      <p>You typed {dateOut}</p></>) : null}
+
+      <button type ='submit'>{!clockInSubmitted? 'Clock In' : 'Clock Out'}</button> 
      </form>
     )
 }

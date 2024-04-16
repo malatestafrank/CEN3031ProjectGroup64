@@ -23,7 +23,8 @@ const timelogSchema = new Schema({
     },
     timeOut:{
         type: String,
-        required: true
+        required: false,
+        default: "Not Clocked Out"
     },
     dateIn: {
         type: String,
@@ -31,7 +32,8 @@ const timelogSchema = new Schema({
     },
     dateOut:{
         type: String,
-        required: true
+        required: false,
+        default: "Not Clocked Out"
     }
 })
 
