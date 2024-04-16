@@ -63,21 +63,18 @@ const TimeLogForm = () => {
     const handleProjectSelection = (e) => {
       setProjectTitle(e.target.value)
     }
-    const handleStartTimeSelection = (e) => {
-      setTimeIn(e.target.value)
-    }
     const handleEndTimeSelection = (e) => {
       setTimeOut(e.target.value)
-    }
-    const handleStartDateSelection = (e) => {
-      setDateIn(e.target.value)
     }
     const handleEndDateSelection = (e) => {
       setDateOut(e.target.value)
     }
     const handleCLockInSubmit = async (e) => {
       e.preventDefault()
-      const timelog={projectTitle, selectedEmployee, selectedManager, timeIn, dateIn}
+      const currentTime = new Date()
+      setTimeIn(currentTime.toLocaleTimeString())
+      setDateIn(currentTime.toLocaleDateString())
+      const timelog={projectTitle, selectedEmployee, selectedManager, timeIn: currentTime.toLocaleTimeString(), dateIn: currentTime.toLocaleDateString()}
       const response = await fetch('/api/time', {
         method: 'POST',
         body: JSON.stringify(timelog),
@@ -99,6 +96,7 @@ const TimeLogForm = () => {
     }
     const handleClockOutSubmit = async (e) => {
         e.preventDefault()
+        const currentTimeClockOut = new Date()
         console.log(projectTitle)
         console.log(selectedEmployee)
         console.log(selectedManager)
@@ -116,7 +114,7 @@ const TimeLogForm = () => {
       }
       const patchResponse = await fetch(`/api/time/${timelogID}`, {
         method: 'PATCH',
-        body: JSON.stringify({timeOut, dateOut}),
+        body: JSON.stringify({timeOut:currentTimeClockOut.toLocaleTimeString(), dateOut:currentTimeClockOut.toLocaleDateString()}),
         headers: {
             'Content-Type': 'application/json'
         }
@@ -171,21 +169,6 @@ const TimeLogForm = () => {
             </select>
             <p>You typed {selectedManager}</p></>) : null}
 
-      {!clockInSubmitted? (<><label>Clock In Time: </label>
-      <input type='text' value={timeIn}onChange={handleStartTimeSelection}/>
-      <p>You typed {timeIn}</p></>) : null}
-
-      {!clockInSubmitted? (<><label>Clock In Date: </label>
-      <input type='date' value={dateIn} onChange={handleStartDateSelection}/>
-      <p>You typed {dateIn}</p></>) : null}
-
-      {clockInSubmitted? (<><label>Clock Out Time: </label>
-      <input type='text' value ={timeOut} onChange={handleEndTimeSelection}/>
-      <p>You typed {timeOut}</p></>) : null}
-
-      {clockInSubmitted? (<>  <label>Clock Out Date: </label>
-      <input type='date' value={dateOut} onChange={handleEndDateSelection}/>
-      <p>You typed {dateOut}</p></>) : null}
 
       <button type ='submit'>{!clockInSubmitted? 'Clock In' : 'Clock Out'}</button> 
      </form>
