@@ -194,7 +194,7 @@ const ProjectForm = () => {
                 ))}
             </ul>
            
-           <button>Add Project</button>
+           <button className="add-project">Add Project</button>
            {error && <div className="error">{error}</div>}
         </form>
 

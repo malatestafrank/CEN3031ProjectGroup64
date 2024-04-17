@@ -66,6 +66,9 @@ header a {
   border-radius: 50%;
   color: #333;
 }
+.project-details .edit {
+  right: 70px;
+}
 
 /* new project form */
 label, input {

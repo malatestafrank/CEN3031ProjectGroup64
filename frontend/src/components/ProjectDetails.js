@@ -23,12 +23,16 @@ const ProjectDetails = ({ project }) => {
         }
     }
 
+    const handleEdit = async () => {
+        
+    }
+
     return (
         <div className="project-details">
             <h4>{project.title}</h4>
             <p><strong>Description: </strong>{project.description}</p>
-            
-            <span className="material-symbols-outlined" onClick={handleClick}>delete</span>
+            <span className="material-symbols-outlined edit" onClick={handleEdit}>edit</span>
+            <span className="material-symbols-outlined delete" onClick={handleClick}>delete</span>
         </div>
     )
 }
