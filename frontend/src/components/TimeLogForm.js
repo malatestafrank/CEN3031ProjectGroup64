@@ -140,34 +140,40 @@ const TimeLogForm = () => {
       <form onSubmit={!clockInSubmitted? handleCLockInSubmit : handleClockOutSubmit}>
 
       <h3>Time Logging Form</h3>
-      
-        {!clockInSubmitted? (<><label>Select Project to Log Time:</label>
-        <select multiple className='project-list' value={projectTitle} onChange = {handleProjectSelection}>
+
+      {!clockInSubmitted? (<><label>Select Project to Log Time:</label>
+        <select className='project-list' value={projectTitle} onChange = {handleProjectSelection} required>
+          <option value="">Select Project</option>
           {projects && projects.map((project) => (
         <option key={project._id}>{project.title}</option>
       ))}
         </select>
-      <p>You typed {projectTitle}</p></>) : null}
 
-      {!clockInSubmitted? (<><label>Add Employees:</label>
-            <select multiple className="employee-list" value={selectedEmployee} onChange={handleEmployeeSelection}>
+      <p>You typed {projectTitle}</p></>) : null}
+      {!clockInSubmitted && (user?.privilege === "admin" || user?.privilege === "employee") && (<>
+      <label>Add Employees:</label>
+            <select className="employee-list" value={selectedEmployee} onChange={handleEmployeeSelection} required>
+              <option value="">Select Employee</option>
                 {employees.map((email) => (
                     <option key={email} value={email}>
                         {email}    
                     </option>
                 ))}
             </select>
-      <p>You typed {selectedEmployee}</p></>) : null}
+      <p>You selected {selectedEmployee}</p></>)}
+      
 
-      {!clockInSubmitted? (<>  <label>Add Managers:</label>
-            <select multiple className="manager-list" value={selectedManager} onChange={handleManagerSelection}>
+      {!clockInSubmitted && (user?.privilege === "admin" || user?.privilege === "manager") && (<>
+      <label>Add Managers:</label>
+            <select className="manager-list" value={selectedManager} onChange={handleManagerSelection} required>
+              <option value="">Select Manager</option>
                 {managers.map((email) => (
                     <option key={email} value={email}>
                         {email}    
                     </option>
                 ))}
             </select>
-            <p>You typed {selectedManager}</p></>) : null}
+            <p>You selected {selectedManager}</p></>)}
 
 
       <button type ='submit'>{!clockInSubmitted? 'Clock In' : 'Clock Out'}</button> 

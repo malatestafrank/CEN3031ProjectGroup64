@@ -9,13 +9,13 @@ const timelogSchema = new Schema({
     },
     selectedEmployee: {
         type: String,
-        required: true,
-        default : ""
+        required: false,
+        default : "Not an Employee Position"
     },
     selectedManager: {
         type: String,
-        required: true,
-        default : ""
+        required: false,
+        default : "Not a Manager Position"
     },
     timeIn: {
         type: String,
