@@ -104,8 +104,13 @@ const TimeLogForm = () => {
         console.log(dateIn)
         console.log(timeOut)
         console.log(dateOut)
+        const encodedprojectTitle = encodeURIComponent(projectTitle)
+        const encodedselectedEmployee = encodeURIComponent(selectedEmployee)
+        const encodedselectedManager = encodeURIComponent(selectedManager)
+        const encodedtimeIn = encodeURIComponent(timeIn)
+        const encodeddateIn = encodeURIComponent(dateIn)
         const response = await fetch(`
-        /api/time/id?projectTitle=${projectTitle}&selectedEmployee=${selectedEmployee}&selectedManager=${selectedManager}&timeIn=${timeIn}&timeOut=Not%20Clocked%20Out&dateIn=${dateIn}&dateOut=Not%20Clocked%20Out`, {
+        /api/time/id?projectTitle=${encodedprojectTitle}&selectedEmployee=${encodedselectedEmployee}&selectedManager=${encodedselectedManager}&timeIn=${encodedtimeIn}&timeOut=Not%20Clocked%20Out&dateIn=${encodeddateIn}&dateOut=Not%20Clocked%20Out`, {
         method: 'GET'
         })
         const timelogID = await response.json()
@@ -149,7 +154,7 @@ const TimeLogForm = () => {
       ))}
         </select>
 
-      <p>You typed {projectTitle}</p></>) : null}
+      <p>You selected {projectTitle}</p></>) : null}
       {!clockInSubmitted && (user?.privilege === "admin" || user?.privilege === "employee") && (<>
       <label>Add Employees:</label>
             <select className="employee-list" value={selectedEmployee} onChange={handleEmployeeSelection} required>
