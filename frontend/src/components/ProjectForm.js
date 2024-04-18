@@ -96,7 +96,7 @@ const ProjectForm = () => {
             return
         }
 
-        const project = {title, description, employees}
+        const project = {title, description, employees, managers}
 
         
         console.log('--- Selected Employees:')
@@ -106,6 +106,14 @@ const ProjectForm = () => {
             })
         }else {
             console.log('No selected employees.')
+        }
+        console.log('--- Selected Managers:')
+        if(managers) {
+            managers.forEach((email) => {
+                console.log(email)
+            })
+        }else {
+            console.log('No selected managers.')
         }
         
 

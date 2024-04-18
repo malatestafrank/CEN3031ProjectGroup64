@@ -45,6 +45,7 @@ const createProject = async (req, res) => {
     const {title, description, employees, managers} = req.body
 
     console.log("Received employee emails:", employees);
+    console.log("Recieved manager emails:", managers)
 
     //add doc to db
     try {
@@ -80,15 +81,33 @@ const updateProject = async (req, res) => {
         return res.status(404).json({error: 'Project Not Found'})
     }
 
-    const project = await Project.findOneAndUpdate({_id: id}, {
-        ...req.body
-    })
+    try {
+        const project = await Project.findById(id)
 
-    if(!project) {
-        return res.status(400).json({error: 'Project Not Found'})
+        if(!project) {
+            return res.status(400).json({error: 'Project Not Found'})
+        }
+    
+        const { title, description, employees, managers } = req.body;
+        if(title) {
+            project.title = title;
+        }
+        if(description) {
+            project.description = description;
+        }
+        if(employees) {
+            project.employees = employees;
+        }
+        if(managers) {
+            project.managers = managers;
+        }
+    
+        await project.save()
+    
+        res.status(200).json(project)
+    } catch {
+        return res.status(400).json({error: error.message})
     }
-
-    res.status(200).json(project)
 }
 
 module.exports = {
