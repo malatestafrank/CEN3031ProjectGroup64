@@ -142,3 +142,17 @@ form.signup, form.login {
   background: #fff;
   border-radius: 4px;
 }
+.time-entries-list{
+  list-style: none;
+  padding: 0;
+}
+.time-entry{
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  padding:10px;
+  cursor: pointer;
+}
+.selected{
+  background-color: #1aac83;
+}

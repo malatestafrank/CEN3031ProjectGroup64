@@ -7,6 +7,7 @@ import ProjectDetails from '../components/ProjectDetails'
 import ProjectForm from "../components/ProjectForm"
 import TimeLogForm from "../components/TimeLogForm"
 import ReportForm from "../components/ReportForm"
+import TimeLogDetails from "../components/TimeLogDetails"
 
 const Home = () => {
     const {projects, dispatch} = useProjectsContext()
@@ -42,6 +43,7 @@ const Home = () => {
             </div>
             {(user?.privilege === 'admin') && <ProjectForm></ProjectForm> }
             <TimeLogForm></TimeLogForm>
+            <TimeLogDetails></TimeLogDetails>
             <ReportForm></ReportForm>
         </div>
         
