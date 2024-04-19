@@ -12,6 +12,7 @@ const TimeLogForm = () => {
     const[selectedEmployee, setSelectedEmployee] = useState('')
     const [managers, setManagers] = useState([])
     const[selectedManager, setSelectedManager] = useState('')
+    const[selectedProject, setSelectedProject] = useState('')
     const[clockInSubmitted, setClockInSubmitted] = useState(false)
     const [error, setError] = useState(null)
     const {projects, dispatch} = useProjectsContext()
@@ -35,6 +36,20 @@ const TimeLogForm = () => {
             fetchProjects()
         }
     }, [dispatch, user]) //[] means the effect will only fire when the page is first loaded
+
+    useEffect(() => {
+      if (projects){
+        const project = projects.find(project=>project.title == projectTitle)
+        if (project){
+          setSelectedProject(project)
+          console.log(project)
+        }
+        else{
+          setSelectedProject("")
+          console.log("Project Not Found")
+        }
+      }
+    }, [projects, projectTitle])
 
     const fetchUserEmails = async () => {
       const res = await fetch('/api/user')
@@ -62,6 +77,8 @@ const TimeLogForm = () => {
 
     const handleProjectSelection = (e) => {
       setProjectTitle(e.target.value)
+      setSelectedEmployee('')
+      setSelectedManager('')
     }
     const handleEndTimeSelection = (e) => {
       setTimeOut(e.target.value)
@@ -136,6 +153,7 @@ const TimeLogForm = () => {
         setDateIn('')
         setTimeOut('')
         setDateOut('')
+        setSelectedProject('')
         setError(null)
         setClockInSubmitted(false)
   }
@@ -155,11 +173,11 @@ const TimeLogForm = () => {
         </select>
 
       <p>You selected {projectTitle}</p></>) : null}
-      {!clockInSubmitted && (user?.privilege === "admin" || user?.privilege === "employee") && (<>
+      {selectedProject && !clockInSubmitted && (user?.privilege === "admin" || user?.privilege === "employee") && (<>
       <label>Add Employees:</label>
             <select className="employee-list" value={selectedEmployee} onChange={handleEmployeeSelection} required>
               <option value="">Select Employee</option>
-                {employees.map((email) => (
+                {selectedProject.employees.map((email) => (
                     <option key={email} value={email}>
                         {email}    
                     </option>
@@ -168,11 +186,11 @@ const TimeLogForm = () => {
       <p>You selected {selectedEmployee}</p></>)}
       
 
-      {!clockInSubmitted && (user?.privilege === "admin" || user?.privilege === "manager") && (<>
+      {selectedProject && !clockInSubmitted && (user?.privilege === "admin" || user?.privilege === "manager") && (<>
       <label>Add Managers:</label>
             <select className="manager-list" value={selectedManager} onChange={handleManagerSelection} required>
               <option value="">Select Manager</option>
-                {managers.map((email) => (
+                {selectedProject.managers.map((email) => (
                     <option key={email} value={email}>
                         {email}    
                     </option>
