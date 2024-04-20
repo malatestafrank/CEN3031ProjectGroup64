@@ -143,67 +143,96 @@ const ProjectForm = () => {
     }
 
     return (
-        <form className="create" onSubmit={handleSubmit}>
-            <h3>Create a New Project</h3>  
+        <form className="project-form" onSubmit={handleSubmit}>
+            <h3>Create a New Project</h3>
 
-            <label>Project Title:</label>
-            <input
-            type="text"
-            onChange={(e) => setTitle(e.target.value)}
-            value={title}
-            />
+            <div className="form-group">
+                <label htmlFor="title">Project Title:</label>
+                <input
+                    id="title"
+                    type="text"
+                    onChange={(e) => setTitle(e.target.value)}
+                    value={title}
+                />
+            </div>
 
-            <label>Project Description:</label>
-            <input
-            type="text"
-            onChange={(e) => setDescription(e.target.value)}
-            value={description}
-            />
+            <div className="form-group">
+                <label htmlFor="description">Project Description:</label>
+                <input
+                    id="description"
+                    type="text"
+                    onChange={(e) => setDescription(e.target.value)}
+                    value={description}
+                />
+            </div>
 
-            <label>Add Employees:</label>
-            <select multiple className="employee-list" value={employees} onChange={handleEmployeeChange}>
-                {availableEmployees.map((email) => (
-                    <option key={email} value={email}>
-                        {email}    
-                    </option>
-                ))}
-            </select>
+            <div className="form-group">
+                <label htmlFor="employees">Add Employees:</label>
+                <select
+                    id="employees"
+                    multiple
+                    className="employee-list"
+                    value={employees}
+                    onChange={handleEmployeeChange}
+                >
+                    {availableEmployees.map((email) => (
+                        <option key={email} value={email}>
+                            {email}
+                        </option>
+                    ))}
+                </select>
+            </div>
 
-            <label>Attributed Employees:</label>
-            <ul className="attributed-employees">
-                {employees.map((email) => (
-                    <li key={email}>
-                        {email}
-                        <button onClick={() => handleRemoveAttributedEmployee(email)}>
-                            Remove
-                        </button>
-                    </li>
-                ))}
-            </ul>
+            <div className="form-group">
+                <label>Attributed Employees:</label>
+                <ul className="attributed-employees">
+                    {employees.map((email) => (
+                        <li key={email}>
+                            {email}
+                            <button className="remove-button" onClick={() => handleRemoveAttributedEmployee(email)}>
+                                Remove
+                            </button>
+                        </li>
+                    ))}
+                </ul>
+            </div>
 
-            <label>Add Managers:</label>
-            <select multiple className="manager-list" value={managers} onChange={handleManagerChange}>
-                {availableManagers.map((email) => (
-                    <option key={email} value={email}>
-                        {email}    
-                    </option>
-                ))}
-            </select>
+            <div className="form-group">
+                <label htmlFor="managers">Add Managers:</label>
+                <select
+                    id="managers"
+                    multiple
+                    className="manager-list"
+                    value={managers}
+                    onChange={handleManagerChange}
+                >
+                    {availableManagers.map((email) => (
+                        <option key={email} value={email}>
+                            {email}
+                        </option>
+                    ))}
+                </select>
+            </div>
 
-            <label>Attributed Managers:</label>
-            <ul className="attributed-managers">
-                {managers.map((email) => (
-                    <li key={email}>
-                        {email}
-                        <button onClick={() => handleRemoveAttributedManager(email)}>
-                            Remove
-                        </button>
-                    </li>
-                ))}
-            </ul>
-           
-           <button className="add-project">Add Project</button>
-           {error && <div className="error">{error}</div>}
+            <div className="form-group">
+                <label>Attributed Managers:</label>
+                <ul className="attributed-managers">
+                    {managers.map((email) => (
+                        <li key={email}>
+                            {email}
+                            <button className="remove-button" onClick={() => handleRemoveAttributedManager(email)}>
+                                Remove
+                            </button>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+
+            <button className="add-project" type="submit">
+                Add Project
+            </button>
+
+            {error && <div className="error">{error}</div>}
         </form>
 
     )

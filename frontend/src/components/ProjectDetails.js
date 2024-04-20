@@ -55,7 +55,6 @@ const ProjectDetails = ({ project }) => {
                 dispatch({ type: 'UPDATE_PROJECT', payload: updatedProjectFromServer })
                 handleCloseEdit()
 
-                this.forceUpdate()
 
                 console.log("Project updated successfully:", updatedProjectFromServer)
             } else {
