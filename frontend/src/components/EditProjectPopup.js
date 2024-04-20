@@ -86,6 +86,7 @@ const EditProjectPopup = ({project, onClose, onSubmit}) => {
     const handleSubmit = () => {
         onSubmit(updatedProject)
         onClose()
+
     }
 
     return (
