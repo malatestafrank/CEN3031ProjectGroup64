@@ -42,11 +42,9 @@ const TimeLogForm = () => {
         const project = projects.find(project=>project.title == projectTitle)
         if (project){
           setSelectedProject(project)
-          console.log(project)
         }
         else{
           setSelectedProject("")
-          console.log("Project Not Found")
         }
       }
     }, [projects, projectTitle])
