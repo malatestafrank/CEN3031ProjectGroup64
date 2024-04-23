@@ -1,16 +1,25 @@
 import { useState, useEffect } from "react"
+import { useAuthContext } from "../hooks/useAuthContext"
 
 const TimeLogDetails = () => {
     const[timeEntries, setTimeEntries] = useState([])
     const[timeLogID, setTimeLogID] = useState('')
+
     const[editedTimeIn, setEditedTimeIn] = useState('')
     const[editedTimeOut, setEditedTimeOut] = useState('')
     const[editedDateIn, setEditedDateIn] = useState('')
     const[editedDateOut, setEditedDateOut] = useState('')
+
+    const[editedtimeEntries, setEditedTimeEntries] = useState([])
+    const[editedtimeLogID, setEditedTimeLogID] = useState('')
+
+    const { user } = useAuthContext()
     const[error, setError] = useState(null)
+
 
     useEffect(() => {
      fetchTimeEntries()
+     fetchEditedTimeEntries()
     }, [])
 
     const fetchTimeEntries = async () =>{
@@ -25,9 +34,33 @@ const TimeLogDetails = () => {
         }
     }
 
+    const fetchEditedTimeEntries = async () =>{
+        const response = await fetch('/api/editedtime', 
+        {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`,
+            }
+        } )
+        if(response.ok){
+            const json = await response.json()
+            setEditedTimeEntries(json)
+            console.log(json)
+        }
+        else{
+            console.log("Failed to retrieve Edited Time Entries")
+        }
+    }
+
     const handleEntryClick=(id)=>{
         setTimeLogID(id)
         console.log("You selected id:", id)
+    }
+
+    const handleEditedEntryClick=(id)=>{
+        setEditedTimeLogID(id)
+        console.log("You selected edited id:", id)
     }
     const handleSubmit = async (e)=>{
         e.preventDefault()
@@ -36,7 +69,8 @@ const TimeLogDetails = () => {
             method: 'POST',
             body: JSON.stringify(editedtimelog),
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
             }
         })
         const json = await response.json()
@@ -51,7 +85,67 @@ const TimeLogDetails = () => {
         setEditedDateIn('')
         setEditedDateOut('')
         setError(null)
+
+        fetchTimeEntries()
+        fetchEditedTimeEntries()
     }
+
+    const confirmEdit = async ()=>{
+        for (let i = 0; i < editedtimeEntries.length; i++) {
+            const entry = editedtimeEntries[i];
+
+            if ( entry[["_id"]] == editedtimeLogID ) {
+                const response = await fetch(`/api/time/${ entry["timeLogID"] }`, {
+                method: 'PATCH',
+                body: JSON.stringify( entry ),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${user.token}`,
+                }
+                })
+                const json = await response.json()
+                if(!response.ok) {
+                    setError(json.error)
+                }
+
+                const resp = await fetch(`/api/editedTime/${ entry["_id"] }`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${user.token}`
+                }
+                })
+                const json2 = await resp.json()
+                if(!resp.ok) {
+                    setError(json2.error)
+                }
+
+
+            }
+        }
+        fetchTimeEntries()
+        fetchEditedTimeEntries()      
+    }
+
+    const denyEdit = async ()=>{
+
+        const resp = await fetch(`/api/editedTime/${ editedtimeLogID }`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+        })
+        const json2 = await resp.json()
+        if(!resp.ok) {
+            setError(json2.error)
+        }
+
+
+        fetchTimeEntries()
+        fetchEditedTimeEntries()      
+    }
+
+
     return (
     <div>
     <ul className="time-entries-list">
@@ -98,6 +192,17 @@ const TimeLogDetails = () => {
 
         <button type="submit">Submit</button>
     </form>
+    <ul className="time-entries-list">
+      <h3>Edit Requests: </h3>
+      {editedtimeEntries.map(( entry ) => (<li key={entry._id} onClick={() => handleEditedEntryClick(entry._id)} className={`time-entry 
+      ${editedtimeLogID === entry._id ? 'selected' : ''}`}> 
+      ID: {entry.timeLogID}, Project: {entry.projectTitle} Employee: {entry.selectedEmployee} Manager: {entry.selectedManager} 
+      Time In: {entry.editedTimeIn} Date In: {entry.editedDateIn} Time Out: {entry.editedTimeOut} Date Out: {entry.editedDateOut}</li>))}
+    </ul>
+    <p>You selected Edited Time Entry ID: {editedtimeLogID}</p>
+    <button type="submit" onClick={confirmEdit}> Confirm</button>
+    <p></p>
+    <button type="submit" onClick={denyEdit}> Deny</button>
     </div>
   )
 }

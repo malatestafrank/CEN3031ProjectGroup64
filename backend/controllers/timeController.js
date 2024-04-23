@@ -59,16 +59,33 @@ const deleteTimeLog = async (req, res) => {
 }
 
 const updateTimeLog = async (req, res) => {
+    // in header
     const {id} = req.params
+
     if(!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).json({error: 'Time Log Not Found'})
     }
-    const timelog = await TimeLog.findOneAndUpdate({_id:id}, {...req.body})
-    if (!timelog){
-        return res.status(400).json({error: "No such Time log"})
 
+    try {
+        const new_data = {
+            timeIn : req.body.editedTimeIn,
+            timeOut : req.body.editedTimeOut,
+            dateIn : req.body.editedDateIn,
+            dateOut : req.body.editedDateOut
+        }
+
+        const timelog = await TimeLog.findOneAndUpdate({_id : id}, {...new_data})
+
+        if (!timelog){
+            return res.status(400).json({error: `No such Time log ${id}`})
+
+        }
+        res.status(200).json(timelog)
     }
-    res.status(200).json(timelog)
+    catch  {
+        return res.status(400).json({error: "Error Has Occured"})
+    }
+    
 }
 
 
