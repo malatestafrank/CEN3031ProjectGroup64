@@ -18,9 +18,22 @@ const createEditedTimeLog = async (req, res) => {
         res.status(400).json({error: error.message})
     }
 }
+//remove edited time log
+const deleteTimeLog = async (req, res) => {
+    const {id} = req.params
+    if(!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({error: 'Edited time Log Not Found'})
+    }
+    const timelog = await EditedTimeLog.findOneAndDelete({_id: id})
+    if(!timelog) {
+        return res.status(400).json({error: 'Edited time Log Not Found'})
+    }
+    res.status(200).json(timelog)
+}
 
 
 module.exports = {
     getEditedTimeLogs,
-    createEditedTimeLog
+    createEditedTimeLog,
+    deleteTimeLog
 }
