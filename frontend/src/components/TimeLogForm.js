@@ -204,7 +204,7 @@ const TimeLogForm = () => {
               <strong>You are clocked into:</strong> {selectedProject.title}
             </label>
             <label className="form-label">
-              <strong>Under the supervision of:</strong> {selectedManager}
+              <strong>Under the supervision of:</strong> {selectedProject.managers}
             </label>
           </div>
         )}
