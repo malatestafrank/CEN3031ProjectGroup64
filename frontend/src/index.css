@@ -382,3 +382,46 @@ button {
 .time-entry-card:hover {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
+
+/*Time log form*/
+
+.project-form {
+  width: 100%;
+  max-width: 400px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  color: #555;
+}
+
+.form-title {
+  font-size: 1.2em;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  color: var(--primary); /* Adjust color to match project theme */
+  margin-bottom: 5px; /* Add spacing between labels */
+}
+
+.form-label strong {
+  color: #555; /* Adjust color to match project theme */
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}

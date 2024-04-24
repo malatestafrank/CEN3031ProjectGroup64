@@ -157,48 +157,61 @@ const TimeLogForm = () => {
   }
 
     return (
-      
-      <form onSubmit={!clockInSubmitted? handleCLockInSubmit : handleClockOutSubmit}>
+      <form onSubmit={!clockInSubmitted ? handleCLockInSubmit : handleClockOutSubmit} className="project-form">
+      <h3 className="form-title">{!clockInSubmitted ? 'Clock In to Project' : ""}</h3>
 
-      <h3>Time Logging Form</h3>
+        {!clockInSubmitted && (
+        <>
+          <div className="form-group">
+            <label htmlFor="project-title" className="form-label">Select Project to Log Time:</label>
+            <select id="project-title" className='project-list form-input' value={projectTitle} onChange={handleProjectSelection} required>
+              <option value="">Select Project</option>
+              {projects && projects.map((project) => (
+                <option key={project._id}>{project.title}</option>
+              ))}
+            </select>
+          </div>
 
-      {!clockInSubmitted? (<><label>Select Project to Log Time:</label>
-        <select className='project-list' value={projectTitle} onChange = {handleProjectSelection} required>
-          <option value="">Select Project</option>
-          {projects && projects.map((project) => (
-        <option key={project._id}>{project.title}</option>
-      ))}
-        </select>
-
-      <p>You selected {projectTitle}</p></>) : null}
-      {selectedProject && !clockInSubmitted && (user?.privilege === "admin" || user?.privilege === "employee") && (<>
-      <label>Add Employees:</label>
-            <select className="employee-list" value={selectedEmployee} onChange={handleEmployeeSelection} required>
-              <option value="">Select Employee</option>
+          {selectedProject && (user?.privilege === "admin" || user?.privilege === "employee") && (
+            <div className="form-group">
+              <label htmlFor="selected-employee" className="form-label">Add Employees:</label>
+              <select id="selected-employee" className="employee-list form-input" value={selectedEmployee} onChange={handleEmployeeSelection} required>
+                <option value="">Select Employee</option>
                 {selectedProject.employees.map((email) => (
-                    <option key={email} value={email}>
-                        {email}    
-                    </option>
+                  <option key={email} value={email}>{email}</option>
                 ))}
-            </select>
-      <p>You selected {selectedEmployee}</p></>)}
-      
+              </select>
+            </div>
+          )}
 
-      {selectedProject && !clockInSubmitted && (user?.privilege === "admin" || user?.privilege === "manager") && (<>
-      <label>Add Managers:</label>
-            <select className="manager-list" value={selectedManager} onChange={handleManagerSelection} required>
-              <option value="">Select Manager</option>
+          {selectedProject && (user?.privilege === "admin" || user?.privilege === "manager") && (
+            <div className="form-group">
+              <label htmlFor="selected-manager" className="form-label">Add Managers:</label>
+              <select id="selected-manager" className="manager-list form-input" value={selectedManager} onChange={handleManagerSelection} required>
+                <option value="">Select Manager</option>
                 {selectedProject.managers.map((email) => (
-                    <option key={email} value={email}>
-                        {email}    
-                    </option>
+                  <option key={email} value={email}>{email}</option>
                 ))}
-            </select>
-            <p>You selected {selectedManager}</p></>)}
+              </select>
+            </div>
+          )}
+        </>
+        )}
 
+        {clockInSubmitted && (
+          <div className="form-group">
+            <label className="form-label">
+              <strong>You are clocked into:</strong> {selectedProject.title}
+            </label>
+            <label className="form-label">
+              <strong>Under the supervision of:</strong> {selectedManager}
+            </label>
+          </div>
+        )}
 
-      <button type ='submit'>{!clockInSubmitted? 'Clock In' : 'Clock Out'}</button> 
-     </form>
+        <button type='submit' className="button">{!clockInSubmitted ? 'Clock In' : 'Clock Out'}</button>
+      </form>
+
     )
 }
 
