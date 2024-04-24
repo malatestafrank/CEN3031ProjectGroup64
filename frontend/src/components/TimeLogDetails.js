@@ -156,67 +156,69 @@ const TimeLogDetails = () => {
             onClick={() => handleEntryClick(entry._id)}
             className={`time-entry ${timeLogID === entry._id ? 'selected' : ''}`}
             >
-            <h4>ID: {entry._id}, Project: {entry.projectTitle}</h4>
-            <p className="employee-info">Employee: {entry.selectedEmployee}</p>
-            <p className="manager-info">Manager: {entry.selectedManager}</p>
-            <p>Time In: {entry.timeIn}</p>
-            <p>Date In: {entry.dateIn}</p>
-            <p>Time Out: {entry.timeOut}</p>
-            <p>Date Out: {entry.dateOut}</p>
+            <h4>Edit Request: {entry.timeLogID}</h4>
+        <p><strong>Project: </strong>{entry.projectTitle}</p>
+        <p className="employee-info"><strong>Employee: </strong>{entry.selectedEmployee}</p>
+        <p className="manager-info"><strong>Manager: </strong>{entry.selectedManager}</p>
+        <p><strong>Time In: </strong>{entry.timeIn}</p>
+        <p><strong>Date In: </strong>{entry.fateIn}</p>
+        <p><strong>Time Out: </strong>{entry.timeOut}</p>
+        <p><strong>Date Out: </strong>{entry.dateOut}</p>
             </li>
         </div>
         ))}
         </ul>
-        <form onSubmit={handleSubmit}>
+        {timeLogID && (
+        <form onSubmit={handleSubmit} className="project-form">
             <h3>Please Enter Fields to be Changed:</h3>
             <p>You selected Time Entry ID: {timeLogID}</p>
 
             <div className="form-group">
-            <label htmlFor="editedTimeIn">Edit Time In (Please Enter In Format: hr:min:sec AM/PM):</label>
-            <input
+                <label htmlFor="editedTimeIn">Edit Time In (Format: hh:mm:ss AM/PM)</label>
+                <input
                 type="text"
                 id="editedTimeIn"
                 onChange={(e) => setEditedTimeIn(e.target.value)}
                 value={editedTimeIn}
-            />
-            <p>You selected {editedTimeIn}</p>
+                placeholder="Enter new time in"
+                />
             </div>
 
             <div className="form-group">
-            <label htmlFor="editedTimeOut">Edit Time Out (Please Enter In Format: hr:min:sec AM/PM):</label>
-            <input
+                <label htmlFor="editedTimeOut">Edit Time Out (Format: hh:mm:ss AM/PM)</label>
+                <input
                 type="text"
                 id="editedTimeOut"
                 onChange={(e) => setEditedTimeOut(e.target.value)}
                 value={editedTimeOut}
-            />
-            <p>You selected {editedTimeOut}</p>
+                placeholder="Enter new time out"
+                />
             </div>
 
             <div className="form-group">
-            <label htmlFor="editedDateIn">Edit Date In:</label>
-            <input
+                <label htmlFor="editedDateIn">Edit Date In:</label>
+                <input
                 type="date"
                 id="editedDateIn"
                 onChange={(e) => setEditedDateIn(e.target.value)}
                 value={editedDateIn}
-            />
-            <p>You selected {editedDateIn}</p>
+                />
             </div>
 
             <div className="form-group">
-            <label htmlFor="editedDateOut">Edit Date Out:</label>
-            <input
+                <label htmlFor="editedDateOut">Edit Date Out:</label>
+                <input
                 type="date"
                 id="editedDateOut"
                 onChange={(e) => setEditedDateOut(e.target.value)}
                 value={editedDateOut}
-            />
-            <p>You selected {editedDateOut}</p>
+                />
             </div>
 
-            <button type="submit">Submit</button>
-        </form>
+            <button type="submit" className="button">Submit</button>
+            </form>
+            )}
+
     {user?.privilege !== "employee" &&
     <div>
         <h3>Edit Requests: </h3>
@@ -239,10 +241,14 @@ const TimeLogDetails = () => {
     </div>
   ))}
 </ul>
+{editedtimeLogID && (
+    <div>
     <p>You selected Edited Time Entry ID: {editedtimeLogID}</p>
     <button className="button" type="submit" onClick={confirmEdit}> Accept</button>
     <p></p>
     <button type="submit" onClick={denyEdit}> Deny</button>
+    </div>
+)}
     </div>
     }
     </div>
