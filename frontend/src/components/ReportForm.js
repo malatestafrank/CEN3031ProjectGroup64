@@ -171,19 +171,59 @@ const ReportForm = () => {
       
       {textVisible && (
         <div>
-          <p>Total sessions clocked: {selectedEmployee}'s sessions</p>
+          <p>Total sessions clocked: {timeEntries.filter(entry => entry.selectedEmployee === selectedEmployee && entry.projectTitle === projectTitle && entry.timeOut !== "Not Clocked Out").length}</p>
           <p>Total time clocked: {selectedEmployee}'s time</p>
           <p>Average time per session: {selectedEmployee}'s average</p>
           {timeEntries.map((entry, index) => {
-            if (entry.selectedEmployee === selectedEmployee && entry.projectTitle === projectTitle) {
-              return <p key={index}>{entry.timeIn}</p>;
+            if (entry.selectedEmployee === selectedEmployee && entry.projectTitle === projectTitle && entry.timeOut !== "Not Clocked Out") {
+              return <p key={index}>{entry.dateIn} {entry.timeIn} - {entry.dateOut} {entry.timeOut}</p>;
             } else {
               return null; // or any other placeholder if you don't want to render anything
             }
           })}
-          <p>Count: {timeEntries.filter(entry => entry.selectedEmployee === selectedEmployee && entry.projectTitle === projectTitle).length}</p>
         </div>
       )}
+
+    <div>
+      {timeEntries.map((entry, index) => {
+        // Destructure the entry object
+        const { dateIn, timeIn, dateOut, timeOut } = entry;
+
+        // Concatenate dateIn and timeIn strings
+        const startDateString = dateIn + ' ' + timeIn;
+        // Concatenate dateOut and timeOut strings
+        const endDateString = dateOut + ' ' + timeOut;
+
+        // Create Date objects from the concatenated strings
+        const startDate = new Date(startDateString);
+        const endDate = new Date(endDateString);
+
+        // Calculate the time difference in milliseconds
+        const timeDifference = endDate - startDate;
+        const totalSeconds = timeDifference / (1000);
+        const hours = Math.floor(totalSeconds / 3600);
+        const minutes = Math.floor((totalSeconds / 3600) / 60);
+        const seconds = totalSeconds % 60;
+        const formattedHours = String(hours).padStart(2, '0');
+        const formattedMinutes = String(minutes).padStart(2, '0');
+        const formattedSeconds = String(seconds).padStart(2, '0');
+
+        
+        if (entry.selectedEmployee === selectedEmployee && entry.projectTitle === projectTitle && entry.timeOut !== "Not Clocked Out") {
+        return (
+          <div key={index}>
+            <p>Time: {formattedHours}:{formattedMinutes}:{formattedSeconds}</p>
+          </div>
+        );
+        }
+        else {
+          return null;
+        }
+      })}
+    </div>
+
+
+
    </div>
   )
 }
