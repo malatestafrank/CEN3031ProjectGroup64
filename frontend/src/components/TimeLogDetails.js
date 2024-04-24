@@ -156,7 +156,7 @@ const TimeLogDetails = () => {
             onClick={() => handleEntryClick(entry._id)}
             className={`time-entry ${timeLogID === entry._id ? 'selected' : ''}`}
             >
-            <h4>Edit Request: {entry.timeLogID}</h4>
+            <h4>Time Entry: {entry._id}</h4>
         <p><strong>Project: </strong>{entry.projectTitle}</p>
         <p className="employee-info"><strong>Employee: </strong>{entry.selectedEmployee}</p>
         <p className="manager-info"><strong>Manager: </strong>{entry.selectedManager}</p>
@@ -241,14 +241,15 @@ const TimeLogDetails = () => {
     </div>
   ))}
 </ul>
-{editedtimeLogID && (
-    <div>
-    <p>You selected Edited Time Entry ID: {editedtimeLogID}</p>
-    <button className="button" type="submit" onClick={confirmEdit}> Accept</button>
-    <p></p>
-    <button type="submit" onClick={denyEdit}> Deny</button>
+    {editedtimeLogID && (
+    <div className="edited-time-entry">
+        <p className="time-entry-info">You selected Edited Time Entry ID: {editedtimeLogID}</p>
+        <div className="button-container">
+        <button className="button accept-button" type="submit" onClick={confirmEdit}>Accept</button>
+        <button className="button deny-button" type="submit" onClick={denyEdit}>Deny</button>
+        </div>
     </div>
-)}
+    )}
     </div>
     }
     </div>

@@ -425,3 +425,45 @@ button {
   border: 1px solid #ccc;
   border-radius: 5px;
 }
+
+.edited-time-entry {
+  margin-top: 5px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center horizontally */
+  justify-content: center; /* Center vertically */
+  border-radius: 8px; /* Rounded corners */
+  padding: 5px;
+}
+
+.edited-time-entry .time-entry-info {
+  margin-bottom: 10px;
+}
+
+.edited-time-entry .button-container {
+  display: flex;
+}
+
+.edited-time-entry .button-container button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.edited-time-entry .button-container .accept-button {
+  background-color: #1aac83; /* Green background for accept button */
+  color: #fff; /* White text for accept button */
+  margin-right: 10px;
+}
+
+.edited-time-entry .button-container .deny-button {
+  background-color: #e7195a; /* Red background for deny button */
+  color: #fff; /* White text for deny button */
+}
+
+.edited-time-entry .button-container button:hover {
+  opacity: 0.8;
+}
