@@ -65,7 +65,7 @@ const TimeLogDetails = () => {
     const handleSubmit = async (e)=>{
         e.preventDefault()
         const editedtimelog = {timeLogID, editedTimeIn, editedTimeOut, editedDateIn, editedDateOut}
-        const response = await fetch('/api/editedtime', {
+        const response = await fetch('/api/time/edit', {
             method: 'POST',
             body: JSON.stringify(editedtimelog),
             headers: {

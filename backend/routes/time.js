@@ -3,6 +3,8 @@ const express = require('express')
 //controller functions
 const {getTimeLogs, getTimeLogID, getTimeLog, createTimeLog, deleteTimeLog, updateTimeLog} = require('../controllers/timeController')
 
+const { getEditedTimeLogs, createEditedTimeLog } = require('../controllers/editedTimeLogController')
+
 const router = express.Router()
 
 
@@ -14,6 +16,8 @@ router.get('/id', getTimeLogID)
 router.get('/:id', getTimeLog)
 
 router.post('/', createTimeLog)
+
+router.post('/edit', createEditedTimeLog)
 
 router.delete('/:id', deleteTimeLog)
 
