@@ -227,13 +227,14 @@ const TimeLogDetails = () => {
         onClick={() => handleEditedEntryClick(entry._id)}
         className={`time-entry ${editedtimeLogID === entry._id ? 'selected' : ''}`}
       >
-        <h4>Edit Request: {entry.timeLogID} For Project: {entry.projectTitle}</h4>
-        <p className="employee-info">Employee: {entry.selectedEmployee}</p>
-        <p className="manager-info">Manager: {entry.selectedManager}</p>
-        <p>Time In: {entry.editedTimeIn}</p>
-        <p>Date In: {entry.editedDateIn}</p>
-        <p>Time Out: {entry.editedTimeOut}</p>
-        <p>Date Out: {entry.editedDateOut}</p>
+        <h4>Edit Request: {entry.timeLogID}</h4>
+        <p><strong>Project: </strong>{entry.projectTitle}</p>
+        <p className="employee-info"><strong>Employee: </strong>{entry.selectedEmployee}</p>
+        <p className="manager-info"><strong>Manager: </strong>{entry.selectedManager}</p>
+        <p><strong>Time In: </strong>{entry.editedTimeIn}</p>
+        <p><strong>Date In: </strong>{entry.editedDateIn}</p>
+        <p><strong>Time Out: </strong>{entry.editedTimeOut}</p>
+        <p><strong>Date Out: </strong>{entry.editedDateOut}</p>
       </li>
     </div>
   ))}
