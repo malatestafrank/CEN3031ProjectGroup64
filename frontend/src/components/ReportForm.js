@@ -67,6 +67,7 @@ const ReportForm = () => {
 
   const handleEmployeeSelection = (e) => {
     setSelectedEmployee(e.target.value)
+    setSelectedTimeRange('')
     setTextVisible(false)
   }
 
@@ -125,9 +126,9 @@ const ReportForm = () => {
 
 
       {selectedEmployee && (<>
-      <label>Select range of time:</label>
+      <label>Select time range:</label>
       <select value = {selectedTimeRange} onChange = {handleTimeTangeSelection}>
-        <option>Select</option>
+        <option value="">Select Time Range</option>
         <option>All ranges</option>
         <option>Less than 1 hour</option>
         <option>1-3 hours</option>
@@ -138,7 +139,12 @@ const ReportForm = () => {
       {selectedTimeRange && <p>You selected {selectedTimeRange}</p>}
       </>)}
 
+      {selectedTimeRange && (<>
       <button onClick={createReportText}>Create Report</button>
+      </>)}
+      
+      
+      
       {textVisible && (
         <div>
             <p>Total sessions clocked: {selectedEmployee}'s sessions</p>
