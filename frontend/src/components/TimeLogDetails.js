@@ -161,7 +161,7 @@ const TimeLogDetails = () => {
         <p className="employee-info"><strong>Employee: </strong>{entry.selectedEmployee}</p>
         <p className="manager-info"><strong>Manager: </strong>{entry.selectedManager}</p>
         <p><strong>Time In: </strong>{entry.timeIn}</p>
-        <p><strong>Date In: </strong>{entry.fateIn}</p>
+        <p><strong>Date In: </strong>{entry.dateIn}</p>
         <p><strong>Time Out: </strong>{entry.timeOut}</p>
         <p><strong>Date Out: </strong>{entry.dateOut}</p>
             </li>
