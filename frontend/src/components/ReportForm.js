@@ -108,7 +108,7 @@ const ReportForm = () => {
       </>}
 
 
-      {selectedProject && (user?.privilege === "admin" || user?.privilege === "employee") && (<>
+      {selectedProject && (<>
       <label>Select employee:</label>
       <select className="employee-list" value={selectedEmployee} onChange={handleEmployeeSelection} required>
       <option value="">Select Employee</option>
@@ -117,6 +117,13 @@ const ReportForm = () => {
         {email}    
       </option>
       ))}
+      {(user?.privilege === "admin" || user?.privilege === "manager") && (<>
+      {selectedProject.managers.map((email) => (
+      <option key={email} value={email}>
+        {email}    
+      </option>
+      ))}
+      </>)}
       </select>
       {selectedEmployee && <p>You selected {selectedEmployee}</p>}
       </>)}
