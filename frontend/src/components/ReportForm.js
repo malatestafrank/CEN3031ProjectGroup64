@@ -3,6 +3,7 @@ import { useProjectsContext } from "../hooks/useProjectsContext"
 import { useAuthContext } from "../hooks/useAuthContext"
 
 const ReportForm = () => {
+  const[timeEntries, setTimeEntries] = useState([])
   const [projectTitle, setProjectTitle] = useState('')
   const [selectedProject, setSelectedProject] = useState('')
   const [selectedTimeRange, setSelectedTimeRange] = useState('')
@@ -46,6 +47,22 @@ const ReportForm = () => {
     }
   }
   }, [projects, projectTitle])
+
+  useEffect(() => {
+    fetchTimeEntries()
+   }, [])
+
+   const fetchTimeEntries = async () =>{
+       const response = await fetch('/api/time')
+       if(response.ok){
+           const json = await response.json()
+           setTimeEntries(json)
+           console.log(json)
+       }
+       else{
+           console.log("Failed to retrieve Time Entries")
+       }
+   }
 
   const fetchUserEmails = async () => {
     const res = await fetch('/api/user')
