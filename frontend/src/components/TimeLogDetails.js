@@ -148,61 +148,98 @@ const TimeLogDetails = () => {
 
     return (
     <div>
-    <ul className="time-entries-list">
-      <h3>Time Entries: </h3>
-      {timeEntries.map((entry) => (<li key={entry._id} onClick={() => handleEntryClick(entry._id)} className={`time-entry 
-      ${timeLogID === entry._id? 'selected' : ''}`}> 
-      ID: {entry._id}, Project: {entry.projectTitle} Employee: {entry.selectedEmployee} Manager: {entry.selectedManager} 
-      Time In: {entry.timeIn} Date In: {entry.dateIn} Time Out: {entry.timeOut} Date Out: {entry.dateOut}</li>))}
-    </ul>
-    <form onSubmit={handleSubmit}>
-        <h3>Please Enter Fields to be Changed: </h3>
-        <p>You selected Time Entry ID: {timeLogID}</p>
-        <label>Edit Time In (Please Enter In Format: hr:min:sec AM/PM): </label>
-            <input
-            type="text"
-            onChange={(e) => setEditedTimeIn(e.target.value)}
-            value={editedTimeIn}
-            />
-        <p>You selected {editedTimeIn}</p>
+        <h3>Time Entries: </h3>
+        <ul className="edit-requests">
+        {timeEntries.map((entry) => (
+        <div className="time-entry-card" key={entry._id}>
+            <li
+            onClick={() => handleEntryClick(entry._id)}
+            className={`time-entry ${timeLogID === entry._id ? 'selected' : ''}`}
+            >
+            <h4>ID: {entry._id}, Project: {entry.projectTitle}</h4>
+            <p className="employee-info">Employee: {entry.selectedEmployee}</p>
+            <p className="manager-info">Manager: {entry.selectedManager}</p>
+            <p>Time In: {entry.timeIn}</p>
+            <p>Date In: {entry.dateIn}</p>
+            <p>Time Out: {entry.timeOut}</p>
+            <p>Date Out: {entry.dateOut}</p>
+            </li>
+        </div>
+        ))}
+        </ul>
+        <form onSubmit={handleSubmit}>
+            <h3>Please Enter Fields to be Changed:</h3>
+            <p>You selected Time Entry ID: {timeLogID}</p>
 
-        <label>Edit Time Out (Please Enter In Format: hr:min:sec AM/PM): </label>
+            <div className="form-group">
+            <label htmlFor="editedTimeIn">Edit Time In (Please Enter In Format: hr:min:sec AM/PM):</label>
             <input
-            type="text"
-            onChange={(e) => setEditedTimeOut(e.target.value)}
-            value={editedTimeOut}
+                type="text"
+                id="editedTimeIn"
+                onChange={(e) => setEditedTimeIn(e.target.value)}
+                value={editedTimeIn}
             />
-        <p>You selected {editedTimeOut}</p>
+            <p>You selected {editedTimeIn}</p>
+            </div>
 
-        <label>Edit Date In: </label>
+            <div className="form-group">
+            <label htmlFor="editedTimeOut">Edit Time Out (Please Enter In Format: hr:min:sec AM/PM):</label>
             <input
-            type="date"
-            onChange={(e) => setEditedDateIn(e.target.value)}
-            value={editedDateIn}
+                type="text"
+                id="editedTimeOut"
+                onChange={(e) => setEditedTimeOut(e.target.value)}
+                value={editedTimeOut}
             />
-        <p>You selected {editedDateIn}</p>
+            <p>You selected {editedTimeOut}</p>
+            </div>
 
-        <label>Edit Date Out: </label>
+            <div className="form-group">
+            <label htmlFor="editedDateIn">Edit Date In:</label>
             <input
-            type="date"
-            onChange={(e) => setEditedDateOut(e.target.value)}
-            value={editedDateOut}
+                type="date"
+                id="editedDateIn"
+                onChange={(e) => setEditedDateIn(e.target.value)}
+                value={editedDateIn}
             />
-        <p>You selected {editedDateOut}</p>
+            <p>You selected {editedDateIn}</p>
+            </div>
 
-        <button type="submit">Submit</button>
-    </form>
+            <div className="form-group">
+            <label htmlFor="editedDateOut">Edit Date Out:</label>
+            <input
+                type="date"
+                id="editedDateOut"
+                onChange={(e) => setEditedDateOut(e.target.value)}
+                value={editedDateOut}
+            />
+            <p>You selected {editedDateOut}</p>
+            </div>
+
+            <button type="submit">Submit</button>
+        </form>
     {user?.privilege !== "employee" &&
     <div>
-    <ul className="time-entries-list"> 
-      <h3>Edit Requests: </h3>
-      {editedtimeEntries.map(( entry ) => (<li key={entry._id} onClick={() => handleEditedEntryClick(entry._id)} className={`time-entry 
-      ${editedtimeLogID === entry._id ? 'selected' : ''}`}> 
-      ID: {entry.timeLogID}, Project: {entry.projectTitle} Employee: {entry.selectedEmployee} Manager: {entry.selectedManager} 
-      Time In: {entry.editedTimeIn} Date In: {entry.editedDateIn} Time Out: {entry.editedTimeOut} Date Out: {entry.editedDateOut}</li>))}
-    </ul>
+        <h3>Edit Requests: </h3>
+    <ul className="edit-requests">
+  {editedtimeEntries.map((entry) => (
+    <div className="time-entry-card" key={entry._id}>
+      <li
+        onClick={() => handleEditedEntryClick(entry._id)}
+        className={`time-entry ${editedtimeLogID === entry._id ? 'selected' : ''}`}
+      >
+        <h4>Edit Request: {entry.timeLogID} For Project: {entry.projectTitle}</h4>
+        <p className="employee-info">Employee: {entry.selectedEmployee}</p>
+        <p className="manager-info">Manager: {entry.selectedManager}</p>
+        <p>Time In: {entry.editedTimeIn}</p>
+        <p>Date In: {entry.editedDateIn}</p>
+        <p>Time Out: {entry.editedTimeOut}</p>
+        <p>Date Out: {entry.editedDateOut}</p>
+      </li>
+    </div>
+  ))}
+</ul>
     <p>You selected Edited Time Entry ID: {editedtimeLogID}</p>
-    <button type="submit" onClick={confirmEdit}> Confirm</button>
+    <button className="button" type="submit" onClick={confirmEdit}> Accept</button>
     <p></p>
     <button type="submit" onClick={denyEdit}> Deny</button>
     </div>

@@ -344,3 +344,41 @@ button {
   color: red;
   margin-top: 10px;
 }
+
+/* Time Entry */
+.time-entry {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.time-entry:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.time-entry h4 {
+  color: var(--primary); /* Green text for project title */
+  margin-bottom: 5px;
+}
+
+.time-entry p {
+  color: #333; /* Black text for the rest of the information */
+  margin-bottom: 5px;
+}
+
+.selected {
+  background-color: #c4c7c6;
+}
+
+.edit-requests {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+
+.time-entry-card:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
