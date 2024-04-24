@@ -132,7 +132,7 @@ const TimeLogForm = () => {
         if(response.ok) {
           console.log('new update added', timelogID)
       }
-      const patchResponse = await fetch(`/api/time/${timelogID}`, {
+      const patchResponse = await fetch(`/api/time/original/${timelogID}`, {
         method: 'PATCH',
         body: JSON.stringify({timeOut:currentTimeClockOut.toLocaleTimeString(), dateOut:currentTimeClockOut.toLocaleDateString()}),
         headers: {
