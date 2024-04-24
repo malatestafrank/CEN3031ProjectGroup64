@@ -9,6 +9,14 @@ const ReportForm = () => {
   const [selectedTimeRange, setSelectedTimeRange] = useState('')
   const [selectedEmployee, setSelectedEmployee] = useState('')
   const [textVisible, setTextVisible] = useState(false)
+  const [sumTotal, setSumTotal] = useState(0)
+  const [sumHours, setSumHours] = useState('')
+  const [sumMinutes, setSumMinutes] = useState('')
+  const [sumSeconds, setSumSeconds] = useState('')
+  const [average, setAverage] = useState(0)
+  const [averageHours, setAverageHours] = useState('')
+  const [averageMinutes, setAverageMinutes] = useState('')
+  const [averageSeconds, setAverageSeconds] = useState('')
   const [employees, setEmployees] = useState([])
   const [managers, setManagers] = useState([])
   const[selectedManager, setSelectedManager] = useState('')
@@ -34,7 +42,7 @@ const ReportForm = () => {
     if(user) {
         fetchProjects()
     }
-  }, [dispatch, user]) //[] means the effect will only fire when the page is first loaded
+  }, [dispatch, user])
 
   useEffect(() => {
   if (projects){
@@ -63,6 +71,32 @@ const ReportForm = () => {
            console.log("Failed to retrieve Time Entries")
        }
    }
+
+   useEffect(() => {
+      setAverage(sumTotal / timeEntries.filter(entry => entry.selectedEmployee === selectedEmployee && entry.projectTitle === projectTitle && entry.timeOut !== "Not Clocked Out").length)
+      const hours = Math.floor(sumTotal / 3600);
+      const minutes = Math.floor((sumTotal / 3600) / 60);
+      const seconds = sumTotal % 60;
+      const formattedHours = String(hours).padStart(2, '0');
+      const formattedMinutes = String(minutes).padStart(2, '0');
+      const formattedSeconds = String(seconds).padStart(2, '0');
+      setSumHours(formattedHours);
+      setSumMinutes(formattedMinutes);
+      setSumSeconds(formattedSeconds);
+   }, [sumTotal])
+
+   useEffect(() => {
+      const hours = Math.floor(average / 3600);
+      const minutes = Math.floor((average / 3600) / 60);
+      const seconds = average % 60;
+      const formattedHours = String(hours).padStart(2, '0');
+      const formattedMinutes = String(minutes).padStart(2, '0');
+      const formattedSeconds = String(seconds).padStart(2, '0');
+      setAverageHours(formattedHours);
+      setAverageMinutes(formattedMinutes);
+      setAverageSeconds(formattedSeconds);
+   }, [average])
+
 
   const fetchUserEmails = async () => {
     const res = await fetch('/api/user')
@@ -107,6 +141,22 @@ const ReportForm = () => {
 
   const createReportText = () => {
     setTextVisible(true)
+    {timeEntries.map((entry, index) => {
+      if (entry.selectedEmployee === selectedEmployee && entry.projectTitle === projectTitle && entry.timeOut !== "Not Clocked Out") {
+      const { dateIn, timeIn, dateOut, timeOut } = entry;
+
+      const startDateString = dateIn + ' ' + timeIn;
+
+      const endDateString = dateOut + ' ' + timeOut;
+
+      const startDate = new Date(startDateString);
+      const endDate = new Date(endDateString);
+
+      const timeDifference = endDate - startDate;
+      const totalSeconds = timeDifference / (1000);
+      setSumTotal(sumTotal => sumTotal + totalSeconds);
+      }
+    })}    
   }
 
   return (
@@ -145,25 +195,7 @@ const ReportForm = () => {
       {selectedEmployee && <p>You selected {selectedEmployee}</p>}
       </>)}
 
-
-
-
-
       {selectedEmployee && (<>
-      <label>Select time range:</label>
-      <select value = {selectedTimeRange} onChange = {handleTimeTangeSelection}>
-        <option value="">Select Time Range</option>
-        <option>All ranges</option>
-        <option>Less than 1 hour</option>
-        <option>1-3 hours</option>
-        <option>3-5 hours</option>
-        <option>5-8 hours</option>
-        <option>More than 8 hours</option>
-      </select>
-      {selectedTimeRange && <p>You selected {selectedTimeRange}</p>}
-      </>)}
-
-      {selectedTimeRange && (<>
       <button onClick={createReportText}>Create Report</button>
       </>)}
       
@@ -172,33 +204,19 @@ const ReportForm = () => {
       {textVisible && (
         <div>
           <p>Total sessions clocked: {timeEntries.filter(entry => entry.selectedEmployee === selectedEmployee && entry.projectTitle === projectTitle && entry.timeOut !== "Not Clocked Out").length}</p>
-          <p>Total time clocked: {selectedEmployee}'s time</p>
-          <p>Average time per session: {selectedEmployee}'s average</p>
+          <p>Total time clocked: {sumHours}:{sumMinutes}:{sumSeconds}</p>
+          <p>Average time per session: {averageHours}:{averageMinutes}:{averageSeconds}</p>
           {timeEntries.map((entry, index) => {
-            if (entry.selectedEmployee === selectedEmployee && entry.projectTitle === projectTitle && entry.timeOut !== "Not Clocked Out") {
-              return <p key={index}>{entry.dateIn} {entry.timeIn} - {entry.dateOut} {entry.timeOut}</p>;
-            } else {
-              return null; // or any other placeholder if you don't want to render anything
-            }
-          })}
-        </div>
-      )}
-
-    <div>
-      {timeEntries.map((entry, index) => {
-        // Destructure the entry object
+        if (entry.selectedEmployee === selectedEmployee && entry.projectTitle === projectTitle && entry.timeOut !== "Not Clocked Out") {
         const { dateIn, timeIn, dateOut, timeOut } = entry;
 
-        // Concatenate dateIn and timeIn strings
+
         const startDateString = dateIn + ' ' + timeIn;
-        // Concatenate dateOut and timeOut strings
         const endDateString = dateOut + ' ' + timeOut;
 
-        // Create Date objects from the concatenated strings
         const startDate = new Date(startDateString);
         const endDate = new Date(endDateString);
 
-        // Calculate the time difference in milliseconds
         const timeDifference = endDate - startDate;
         const totalSeconds = timeDifference / (1000);
         const hours = Math.floor(totalSeconds / 3600);
@@ -208,22 +226,20 @@ const ReportForm = () => {
         const formattedMinutes = String(minutes).padStart(2, '0');
         const formattedSeconds = String(seconds).padStart(2, '0');
 
+
         
-        if (entry.selectedEmployee === selectedEmployee && entry.projectTitle === projectTitle && entry.timeOut !== "Not Clocked Out") {
         return (
           <div key={index}>
-            <p>Time: {formattedHours}:{formattedMinutes}:{formattedSeconds}</p>
+            <p>Time clocked on {dateIn}: {formattedHours}:{formattedMinutes}:{formattedSeconds}</p>
           </div>
         );
         }
-        else {
-          return null;
-        }
       })}
-    </div>
-
-
-
+      
+      
+      
+      </div>
+      )}
    </div>
   )
 }
