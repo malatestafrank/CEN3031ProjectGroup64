@@ -89,18 +89,6 @@ setSelectedManager('')
    <div>
 
     <h3>View Report</h3>
-    
-      <label>Select project to report:</label>
-      <select id="project" value={selectedProject} onChange = {handleProjectSelection}>
-        <option>Select</option>
-        <option>All projects</option>
-        {projects && projects.map((project) => (
-      <option key={project._id}>{project.title}</option>
-    ))}
-      </select>
-
-
-
       {<><label>Select Project to Log Time:</label>
       <select className='project-list' value={projectTitle} onChange={handleProjectSelection} required>
       <option value="">Select Project</option>
@@ -138,16 +126,6 @@ setSelectedManager('')
         <option>3-5 hours</option>
         <option>5-8 hours</option>
         <option>More than 8 hours</option>
-      </select>
-
-      <label>Select employee:</label>
-      <select value = {selectedEmployee} onChange = {handleEmployeeSelection}>
-      <option>Select</option>
-        <option>All employees</option>
-        <option>Employee A</option>
-        <option>Employee B</option>
-        <option>Employee C</option>
-        <option>Employee D</option>
       </select>
 
       <button onClick={createReportText}>Create Report</button>
