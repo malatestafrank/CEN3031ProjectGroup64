@@ -16,70 +16,77 @@ const ReportForm = () => {
 
 
 
-useEffect(() => {
-  fetchUserEmails()
-  const fetchProjects = async () => {
-      const response = await fetch('/api/projects', {
-          headers: {
-              'Authorization': `Bearer ${user.token}`
-          }
-      })
-      const json = await response.json()
+  useEffect(() => {
+    fetchUserEmails()
+    const fetchProjects = async () => {
+        const response = await fetch('/api/projects', {
+            headers: {
+                'Authorization': `Bearer ${user.token}`
+            }
+        })
+        const json = await response.json()
 
-      if(response.ok) {
-          dispatch({type: 'SET_PROJECTS', payload: json})
-      }
+        if(response.ok) {
+            dispatch({type: 'SET_PROJECTS', payload: json})
+        }
+    }
+    if(user) {
+        fetchProjects()
+    }
+  }, [dispatch, user]) //[] means the effect will only fire when the page is first loaded
+
+  useEffect(() => {
+  if (projects){
+    const project = projects.find(project=>project.title == projectTitle)
+    if (project){
+      setSelectedProject(project)
+    }
+    else{
+      setSelectedProject("")
+    }
   }
-  if(user) {
-      fetchProjects()
+  }, [projects, projectTitle])
+
+  const fetchUserEmails = async () => {
+    const res = await fetch('/api/user')
+    const json = await res.json()
+
+    if(res.ok) {
+      const employeeEmails = json.filter((user) => user.privilege === 'employee').map((employee) => employee.email)
+      const managerEmails = json.filter((user) => user.privilege === 'manager').map((manager) => manager.email)
+
+      setEmployees(employeeEmails)
+      setManagers(managerEmails)
+      console.log("success!")
+    }
+
+    else{
+      console.log('failed to get emails')
+    }
   }
-}, [dispatch, user]) //[] means the effect will only fire when the page is first loaded
 
-useEffect(() => {
-if (projects){
-  const project = projects.find(project=>project.title == projectTitle)
-  if (project){
-    setSelectedProject(project)
+  const handleEmployeeSelection = (e) => {
+    setSelectedEmployee(e.target.value)
+    setTextVisible(false)
   }
-  else{
-    setSelectedProject("")
+
+  const handleManagerSelection = (e) => {
+    setSelectedManager(e.target.value)
+    setTextVisible(false)
+  } 
+
+  const handleProjectSelection = (e) => {
+    setProjectTitle(e.target.value)
+    setSelectedEmployee('')
+    setSelectedManager('')
+    setTextVisible(false)
   }
-}
-}, [projects, projectTitle])
 
-const fetchUserEmails = async () => {
-const res = await fetch('/api/user')
-const json = await res.json()
-
-if(res.ok) {
-    const employeeEmails = json.filter((user) => user.privilege === 'employee').map((employee) => employee.email)
-    const managerEmails = json.filter((user) => user.privilege === 'manager').map((manager) => manager.email)
-
-    setEmployees(employeeEmails)
-    setManagers(managerEmails)
-    console.log("success!")
-}
-else{
-  console.log('failed to get emails')
-}
-}
-
-const handleEmployeeSelection = (e) => {
-setSelectedEmployee(e.target.value)
-}
-const handleManagerSelection = (e) => {
-setSelectedManager(e.target.value)
-}
-
-const handleProjectSelection = (e) => {
-setProjectTitle(e.target.value)
-setSelectedEmployee('')
-setSelectedManager('')
-}
   const handleTimeTangeSelection = (e) => {
     setSelectedTimeRange(e.target.value)
     setTextVisible(false)
   }
+
   const createReportText = () => {
     setTextVisible(true)
   }
