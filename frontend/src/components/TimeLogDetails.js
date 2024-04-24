@@ -219,7 +219,7 @@ const TimeLogDetails = () => {
             </form>
             )}
 
-    {user?.privilege !== "employee" &&
+    {user?.privilege === "manager" &&
     <div>
         <h3>Edit Requests: </h3>
     <ul className="edit-requests">
