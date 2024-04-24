@@ -231,8 +231,6 @@ const TimeLogDetails = () => {
       >
         <h4>Edit Request: {entry.timeLogID}</h4>
         <p><strong>Project: </strong>{entry.projectTitle}</p>
-        <p className="employee-info"><strong>Employee: </strong>{entry.selectedEmployee}</p>
-        <p className="manager-info"><strong>Manager: </strong>{entry.selectedManager}</p>
         <p><strong>Time In: </strong>{entry.editedTimeIn}</p>
         <p><strong>Date In: </strong>{entry.editedDateIn}</p>
         <p><strong>Time Out: </strong>{entry.editedTimeOut}</p>
