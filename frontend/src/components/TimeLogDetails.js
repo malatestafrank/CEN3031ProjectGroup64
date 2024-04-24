@@ -150,7 +150,7 @@ const TimeLogDetails = () => {
     <div>
         <h3>Time Entries: </h3>
         <ul className="edit-requests">
-        {timeEntries.map((entry) => (
+        {timeEntries.filter(entry => entry.selectedEmployee===user.email || entry.selectedManager===user.email).map((entry) => (
         <div className="time-entry-card" key={entry._id}>
             <li
             onClick={() => handleEntryClick(entry._id)}
