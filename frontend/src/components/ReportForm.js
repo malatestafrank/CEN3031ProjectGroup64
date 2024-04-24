@@ -171,9 +171,17 @@ const ReportForm = () => {
       
       {textVisible && (
         <div>
-            <p>Total sessions clocked: {selectedEmployee}'s sessions</p>
-            <p>Total time clocked: {selectedEmployee}'s time</p>
-            <p>Average time per session: {selectedEmployee}'s average</p>
+          <p>Total sessions clocked: {selectedEmployee}'s sessions</p>
+          <p>Total time clocked: {selectedEmployee}'s time</p>
+          <p>Average time per session: {selectedEmployee}'s average</p>
+          {timeEntries.map((entry, index) => {
+            if (entry.selectedEmployee === selectedEmployee && entry.projectTitle === projectTitle) {
+              return <p key={index}>{entry.timeIn}</p>;
+            } else {
+              return null; // or any other placeholder if you don't want to render anything
+            }
+          })}
+          <p>Count: {timeEntries.filter(entry => entry.selectedEmployee === selectedEmployee && entry.projectTitle === projectTitle).length}</p>
         </div>
       )}
    </div>
