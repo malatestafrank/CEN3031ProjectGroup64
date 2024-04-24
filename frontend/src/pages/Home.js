@@ -42,7 +42,7 @@ const Home = () => {
                 ))}
             </div>
             {(user?.privilege === 'admin') && <ProjectForm></ProjectForm> }
-            <TimeLogForm></TimeLogForm>
+            {(user?.privilege !== 'admin') && <TimeLogForm></TimeLogForm>}
             <TimeLogDetails></TimeLogDetails>
             <ReportForm></ReportForm>
         </div>
