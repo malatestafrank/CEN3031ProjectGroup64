@@ -40,7 +40,7 @@ header a {
 }
 .project-details {
   background: #fff;
-  border-radius: 4px;
+  border-radius: 8px; /* Rounded corners */
   margin: 20px auto;
   padding: 20px;
   position: relative;
