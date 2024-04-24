@@ -65,7 +65,7 @@ const TimeLogDetails = () => {
     const handleSubmit = async (e)=>{
         e.preventDefault()
         const editedtimelog = {timeLogID, editedTimeIn, editedTimeOut, editedDateIn, editedDateOut}
-        const response = await fetch('/api/time/edit', {
+        const response = await fetch('/api/editedtime', {
             method: 'POST',
             body: JSON.stringify(editedtimelog),
             headers: {
@@ -150,7 +150,7 @@ const TimeLogDetails = () => {
     <div>
         <h3>Time Entries: </h3>
         <ul className="edit-requests">
-        {timeEntries.filter(entry => entry.selectedEmployee===user.email || entry.selectedManager===user.email).map((entry) => (
+        {timeEntries.map((entry) => (
         <div className="time-entry-card" key={entry._id}>
             <li
             onClick={() => handleEntryClick(entry._id)}
@@ -161,7 +161,7 @@ const TimeLogDetails = () => {
         <p className="employee-info"><strong>Employee: </strong>{entry.selectedEmployee}</p>
         <p className="manager-info"><strong>Manager: </strong>{entry.selectedManager}</p>
         <p><strong>Time In: </strong>{entry.timeIn}</p>
-        <p><strong>Date In: </strong>{entry.dateIn}</p>
+        <p><strong>Date In: </strong>{entry.fateIn}</p>
         <p><strong>Time Out: </strong>{entry.timeOut}</p>
         <p><strong>Date Out: </strong>{entry.dateOut}</p>
             </li>
@@ -231,8 +231,6 @@ const TimeLogDetails = () => {
       >
         <h4>Edit Request: {entry.timeLogID}</h4>
         <p><strong>Project: </strong>{entry.projectTitle}</p>
-        <p className="employee-info"><strong>Employee: </strong>{entry.selectedEmployee}</p>
-        <p className="manager-info"><strong>Manager: </strong>{entry.selectedManager}</p>
         <p><strong>Time In: </strong>{entry.editedTimeIn}</p>
         <p><strong>Date In: </strong>{entry.editedDateIn}</p>
         <p><strong>Time Out: </strong>{entry.editedTimeOut}</p>
