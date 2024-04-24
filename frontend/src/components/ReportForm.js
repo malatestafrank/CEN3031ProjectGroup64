@@ -3,37 +3,81 @@ import { useProjectsContext } from "../hooks/useProjectsContext"
 import { useAuthContext } from "../hooks/useAuthContext"
 
 const ReportForm = () => {
+  const [projectTitle, setProjectTitle] = useState('')
   const [selectedProject, setSelectedProject] = useState('')
-  const [projects, setProjects] = useState('')
   const [selectedTimeRange, setSelectedTimeRange] = useState('')
   const [selectedEmployee, setSelectedEmployee] = useState('')
   const [textVisible, setTextVisible] = useState(false)
+  const [employees, setEmployees] = useState([])
+  const [managers, setManagers] = useState([])
+  const[selectedManager, setSelectedManager] = useState('')
+  const {projects, dispatch} = useProjectsContext()
+  const {user} = useAuthContext()
 
 
-  useEffect(() => {
-    const fetchProjects = async () => {
-        const response = await fetch('/api/projects')
-        const json = await response.json()
 
-        if(response.ok) {
-            setProjects(json)
-        }
-    }
+useEffect(() => {
+  fetchUserEmails()
+  const fetchProjects = async () => {
+      const response = await fetch('/api/projects', {
+          headers: {
+              'Authorization': `Bearer ${user.token}`
+          }
+      })
+      const json = await response.json()
 
-    fetchProjects()
-}, []) //[] means the effect will only fire when the page is first loaded
-
-
-  const handleProjectSelection = (e) => {
-    setSelectedProject(e.target.value)
-    setTextVisible(false)
+      if(response.ok) {
+          dispatch({type: 'SET_PROJECTS', payload: json})
+      }
   }
+  if(user) {
+      fetchProjects()
+  }
+}, [dispatch, user]) //[] means the effect will only fire when the page is first loaded
+
+useEffect(() => {
+if (projects){
+  const project = projects.find(project=>project.title == projectTitle)
+  if (project){
+    setSelectedProject(project)
+  }
+  else{
+    setSelectedProject("")
+  }
+}
+}, [projects, projectTitle])
+
+const fetchUserEmails = async () => {
+const res = await fetch('/api/user')
+const json = await res.json()
+
+if(res.ok) {
+    const employeeEmails = json.filter((user) => user.privilege === 'employee').map((employee) => employee.email)
+    const managerEmails = json.filter((user) => user.privilege === 'manager').map((manager) => manager.email)
+
+    setEmployees(employeeEmails)
+    setManagers(managerEmails)
+    console.log("success!")
+}
+else{
+  console.log('failed to get emails')
+}
+}
+
+const handleEmployeeSelection = (e) => {
+setSelectedEmployee(e.target.value)
+}
+const handleManagerSelection = (e) => {
+setSelectedManager(e.target.value)
+}
+
+const handleProjectSelection = (e) => {
+setProjectTitle(e.target.value)
+setSelectedEmployee('')
+setSelectedManager('')
+}
   const handleTimeTangeSelection = (e) => {
     setSelectedTimeRange(e.target.value)
-    setTextVisible(false)
-  }
-  const handleEmployeeSelection = (e) => {
-    setSelectedEmployee(e.target.value)
     setTextVisible(false)
   }
   const createReportText = () => {
@@ -54,6 +98,36 @@ const ReportForm = () => {
       <option key={project._id}>{project.title}</option>
     ))}
       </select>
+
+
+
+      {<><label>Select Project to Log Time:</label>
+      <select className='project-list' value={projectTitle} onChange={handleProjectSelection} required>
+      <option value="">Select Project</option>
+      {projects && projects.map((project) => (
+      <option key={project._id}>{project.title}</option>
+      ))}
+      </select>
+      <p>You selected {projectTitle}</p>
+      </>}
+
+      {selectedProject && (user?.privilege === "admin" || user?.privilege === "employee") && (<>
+      <label>Add Employees:</label>
+      <select className="employee-list" value={selectedEmployee} onChange={handleEmployeeSelection} required>
+      <option value="">Select Employee</option>
+      {selectedProject.employees.map((email) => (
+      <option key={email} value={email}>
+        {email}    
+      </option>
+      ))}
+      </select>
+      <p>You selected {selectedEmployee}</p>
+      </>)}
+
+
+
+
+
     
       <label>Select range of time:</label>
       <select value = {selectedTimeRange} onChange = {handleTimeTangeSelection}>
