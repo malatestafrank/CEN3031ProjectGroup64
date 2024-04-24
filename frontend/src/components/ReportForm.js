@@ -206,6 +206,35 @@ const ReportForm = () => {
           <p>Total sessions clocked: {timeEntries.filter(entry => entry.selectedEmployee === selectedEmployee && entry.projectTitle === projectTitle && entry.timeOut !== "Not Clocked Out").length}</p>
           <p>Total time clocked: {sumHours}:{sumMinutes}:{sumSeconds}</p>
           <p>Average time per session: {averageHours}:{averageMinutes}:{averageSeconds}</p>
+          {timeEntries.map((entry, index) => {
+        if (entry.selectedEmployee === selectedEmployee && entry.projectTitle === projectTitle && entry.timeOut !== "Not Clocked Out") {
+        const { dateIn, timeIn, dateOut, timeOut } = entry;
+
+
+        const startDateString = dateIn + ' ' + timeIn;
+        const endDateString = dateOut + ' ' + timeOut;
+
+        const startDate = new Date(startDateString);
+        const endDate = new Date(endDateString);
+
+        const timeDifference = endDate - startDate;
+        const totalSeconds = timeDifference / (1000);
+        const hours = Math.floor(totalSeconds / 3600);
+        const minutes = Math.floor((totalSeconds / 3600) / 60);
+        const seconds = totalSeconds % 60;
+        const formattedHours = String(hours).padStart(2, '0');
+        const formattedMinutes = String(minutes).padStart(2, '0');
+        const formattedSeconds = String(seconds).padStart(2, '0');
+
+
+        
+        return (
+          <div key={index}>
+            <p>Time clocked on {dateIn}: {formattedHours}:{formattedMinutes}:{formattedSeconds}</p>
+          </div>
+        );
+        }
+      })}
       
       
       
