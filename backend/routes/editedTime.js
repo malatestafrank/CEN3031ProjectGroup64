@@ -12,7 +12,7 @@ router.use(requireAUTHManager)
 
 router.get('/', getEditedTimeLogs)
 
-router.post('/', createEditedTimeLog)
+
 
 router.delete('/:id', deleteTimeLog)
 
