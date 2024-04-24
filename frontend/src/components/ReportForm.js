@@ -96,18 +96,19 @@ const ReportForm = () => {
    <div>
 
     <h3>View Report</h3>
-      {<><label>Select Project to Log Time:</label>
+      {<><label>Select project to generate report about:</label>
       <select className='project-list' value={projectTitle} onChange={handleProjectSelection} required>
       <option value="">Select Project</option>
       {projects && projects.map((project) => (
       <option key={project._id}>{project.title}</option>
       ))}
       </select>
-      <p>You selected {projectTitle}</p>
+      {projectTitle && <p>You selected {projectTitle}</p>}
       </>}
 
+
       {selectedProject && (user?.privilege === "admin" || user?.privilege === "employee") && (<>
-      <label>Add Employees:</label>
+      <label>Select employee:</label>
       <select className="employee-list" value={selectedEmployee} onChange={handleEmployeeSelection} required>
       <option value="">Select Employee</option>
       {selectedProject.employees.map((email) => (
@@ -116,14 +117,14 @@ const ReportForm = () => {
       </option>
       ))}
       </select>
-      <p>You selected {selectedEmployee}</p>
+      {selectedEmployee && <p>You selected {selectedEmployee}</p>}
       </>)}
 
 
 
 
 
-    
+      {selectedEmployee && (<>
       <label>Select range of time:</label>
       <select value = {selectedTimeRange} onChange = {handleTimeTangeSelection}>
         <option>Select</option>
@@ -134,6 +135,8 @@ const ReportForm = () => {
         <option>5-8 hours</option>
         <option>More than 8 hours</option>
       </select>
+      {selectedTimeRange && <p>You selected {selectedTimeRange}</p>}
+      </>)}
 
       <button onClick={createReportText}>Create Report</button>
       {textVisible && (
