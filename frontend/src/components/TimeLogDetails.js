@@ -192,7 +192,9 @@ const TimeLogDetails = () => {
 
         <button type="submit">Submit</button>
     </form>
-    <ul className="time-entries-list">
+    {user?.privilege !== "employee" &&
+    <div>
+    <ul className="time-entries-list"> 
       <h3>Edit Requests: </h3>
       {editedtimeEntries.map(( entry ) => (<li key={entry._id} onClick={() => handleEditedEntryClick(entry._id)} className={`time-entry 
       ${editedtimeLogID === entry._id ? 'selected' : ''}`}> 
@@ -203,6 +205,8 @@ const TimeLogDetails = () => {
     <button type="submit" onClick={confirmEdit}> Confirm</button>
     <p></p>
     <button type="submit" onClick={denyEdit}> Deny</button>
+    </div>
+    }
     </div>
   )
 }
