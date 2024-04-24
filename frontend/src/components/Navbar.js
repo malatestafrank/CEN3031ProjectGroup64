@@ -28,6 +28,9 @@ const Navbar = () => {
                             <Link to="/">Login</Link>
                         </div>
                     )}
+                    {user?.privilege === "admin" && (
+                        <Link to="/signup">Create Account</Link>
+                    )}
                 </nav>
             </div>
         </header>
